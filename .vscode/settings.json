@@ -1,0 +1,12 @@
+{
+    "go.toolsEnvVars": {
+        "GOARCH": "wasm",
+        "GOOS": "js"
+    },
+    // "go.buildTags": "js,wasm",
+    // "go.testEnvVars": {
+    //     "GOARCH":"wasm",
+    //     "GOOS": "js",
+    // },
+    // "go.testTags": "js,wasm",
+}
