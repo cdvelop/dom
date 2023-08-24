@@ -1,6 +1,3 @@
-//go:build js && wasm
-// +build js,wasm
-
 package dom
 
 import (
@@ -9,4 +6,8 @@ import (
 
 func Call(functionName string, args string) {
 	js.Global().Call(functionName, args)
+}
+
+func Log(message ...any) {
+	js.Global().Get("console").Call("log", message...)
 }

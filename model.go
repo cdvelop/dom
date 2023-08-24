@@ -1,18 +1,25 @@
-//go:build js && wasm
-// +build js,wasm
-
 package dom
 
-import "github.com/cdvelop/model"
+import (
+	"syscall/js"
 
-func New(t model.Theme, m ...*model.Module) *Dom {
-	return &Dom{
-		Theme:   t,
-		modules: m,
-	}
-}
+	"github.com/cdvelop/model"
+)
 
 type Dom struct {
-	model.Theme
+	theme   model.Theme
 	modules []*model.Module
+	header  model.FrontendHeaderHandler
+	// object_id + object
+	objects map[string]*model.Object
+
+	last_object *model.Object
+}
+
+type HtmlElement struct {
+	Container js.Value
+	Name      string //ej: div,li
+	Id        string //ej: 234
+	Class     string // ej: .css-class
+	Content   string // ej: <h1>hello</h1>
 }

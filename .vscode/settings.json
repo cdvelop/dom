@@ -3,7 +3,7 @@
         "GOARCH": "wasm",
         "GOOS": "js"
     },
-    // "go.buildTags": "js,wasm",
+    "go.buildTags": "js,wasm",
     // "go.testEnvVars": {
     //     "GOARCH":"wasm",
     //     "GOOS": "js",
