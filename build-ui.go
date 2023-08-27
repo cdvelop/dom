@@ -11,6 +11,8 @@ func (d Dom) BuildUI() {
 	d.buildModules()
 
 	d.registerGlobalFunctions()
+
+	d.userMessage("sistema cargado", "stop")
 }
 
 func (d Dom) buildMenu() {

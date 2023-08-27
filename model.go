@@ -14,6 +14,10 @@ type Dom struct {
 	objects map[string]*model.Object
 
 	last_object *model.Object
+	form        js.Value
+	form_data   map[string]string
+
+	timeout_typing js.Value
 }
 
 type HtmlElement struct {

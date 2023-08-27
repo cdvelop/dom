@@ -24,17 +24,17 @@ func (d Dom) FormAutoFill(o *model.Object) {
 func formComplete(o *model.Object, data map[string]string) error {
 
 	if o == nil {
-		return model.MyError{Message: "formComplete error objeto nulo"}
+		return model.Error("formComplete object nil")
 	}
 
 	module_html := body.Call("querySelector", "#"+o.ModuleName())
 	if module_html.IsNull() {
-		return model.MyError{Message: "formComplete error no se logro obtener modulo html"}
+		return model.Error("formComplete no se logro obtener modulo html")
 	}
 
 	form := module_html.Call("querySelector", "form", "#"+o.ID())
 	if form.IsNull() {
-		return model.MyError{Message: "formComplete error no se logro obtener formulario"}
+		return model.Error("formComplete error no se logro obtener formulario")
 	}
 
 	form.Call("reset")
@@ -108,7 +108,7 @@ func getHtmlInput(form js.Value, f model.Field) (js.Value, error) {
 
 	input = form.Call("querySelector"+all, input_type+"[name='"+f.Name+"']")
 	if input.IsNull() {
-		return js.Value{}, model.MyError{Message: "error input: " + f.Name + " tipo:" + f.Input.HtmlName() + " no encontrado en formulario"}
+		return js.Value{}, model.Error("input:", f.Name, "tipo:", f.Input.HtmlName(), "no encontrado en formulario")
 	}
 
 	return input, nil

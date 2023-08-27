@@ -1,6 +1,7 @@
 package dom
 
 import (
+	"strconv"
 	"syscall/js"
 
 	"github.com/cdvelop/model"
@@ -8,11 +9,15 @@ import (
 
 func (d *Dom) currentObject(p []js.Value) error {
 
-	if len(p) != 2 {
-		return model.MyError{Message: "error currentObject: se esperaban 2 argumentos"}
+	if len(p) != 1 {
+		return model.Error("en currentObject: se esperaban 1 argumentos y se enviaron:", strconv.Itoa(len(p)))
 	}
 
-	form_id := p[1].Get("id").String()
+	d.form = p[0].Get("form")
+
+	Log("formulario obtenido 2:", d.form)
+
+	form_id := d.form.Get("id").String()
 
 	if d.last_object == nil {
 		Log("primer inicio objeto id: " + form_id)
@@ -38,7 +43,7 @@ func (d *Dom) getObjectByID(id string) error {
 
 	object, exist := d.objects[id] //id objeto
 	if !exist {
-		return model.MyError{Message: "error no se encontró objeto id: " + id}
+		return model.Error("error no se encontró objeto id:", id)
 	}
 	d.last_object = object
 

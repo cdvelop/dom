@@ -4,9 +4,9 @@ import (
 	"syscall/js"
 )
 
-func (d Dom) formData(form js.Value) map[string]string {
+func (d Dom) formData() map[string]string {
 
-	form_data := js.Global().Get("FormData").New(form)
+	form_data := js.Global().Get("FormData").New(d.form)
 	data_object := make(map[string]string)
 
 	form_data.Call("forEach", js.FuncOf(func(this js.Value, p []js.Value) interface{} {
