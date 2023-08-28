@@ -18,15 +18,17 @@ func (d *Dom) userTyping(this js.Value, p []js.Value) interface{} {
 
 		err := d.currentObject(p)
 		if err != nil {
-			Log(err.Error())
+			log(err.Error())
 			return nil
 		}
 
 		err = d.validateForm(p[0])
 		if err != nil {
-			Log(err.Error())
+			log(err.Error())
 			return nil
 		}
+
+		// err = d.db.CreateObjectsInDB()
 
 		return nil
 	}), 500)

@@ -8,13 +8,6 @@ import (
 
 func (d *Dom) validateForm(input js.Value) error {
 
-	if d.form_data == nil {
-		Log("FORM NIL DATA ")
-
-		d.form_data = make(map[string]string, len(d.last_object.Fields))
-
-	}
-
 	// Obtener el valor del input pasado desde JavaScript
 	input_value := input.Get("value").String()
 	input_name := input.Get("name").String()
@@ -22,9 +15,12 @@ func (d *Dom) validateForm(input js.Value) error {
 	// Log(" CAMPO: " + input_name + " ID:" + input_id + " VALOR:" + input_value)
 
 	// 1 validar solo el campo actual
-	field := d.last_object.GetFieldByName(input_name)
-	if !InputRight(field, input, input_value) {
+	field, err := d.last_object.GetFieldByName(input_name)
+	if err != nil {
+		return err
+	}
 
+	if !InputRight(field, input, input_value) {
 		return model.Error("campo", input_name, "no valido", input_value)
 	}
 

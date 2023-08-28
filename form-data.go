@@ -4,10 +4,14 @@ import (
 	"syscall/js"
 )
 
-func (d Dom) formData() map[string]string {
+func (d *Dom) formData() {
+
+	if d.data_object == nil {
+		// creamos la variable par almacenar el formulario si este no existe
+		d.data_object = make(map[string]string, len(d.last_object.Fields))
+	}
 
 	form_data := js.Global().Get("FormData").New(d.form)
-	data_object := make(map[string]string)
 
 	form_data.Call("forEach", js.FuncOf(func(this js.Value, p []js.Value) interface{} {
 		new_value := p[0].String()
@@ -15,12 +19,12 @@ func (d Dom) formData() map[string]string {
 
 		if _, exist := d.last_object.FieldExist(field_name); exist {
 
-			if existing_values, ok := data_object[field_name]; ok {
+			if existing_values, ok := d.data_object[field_name]; ok {
 
-				data_object[field_name] = existing_values + ", " + new_value
+				d.data_object[field_name] = existing_values + ", " + new_value
 
 			} else {
-				data_object[field_name] = new_value
+				d.data_object[field_name] = new_value
 			}
 
 		}
@@ -28,10 +32,8 @@ func (d Dom) formData() map[string]string {
 		return nil
 	}), nil)
 
-	for key, value := range data_object {
-		Log("FIELD NAME: ", key, "VALUE: ", value)
-
+	for key, value := range d.data_object {
+		log("FIELD NAME: ", key, "VALUE: ", value)
 	}
 
-	return data_object
 }

@@ -2,5 +2,5 @@ package dom
 
 func (d Dom) RunHeaderHandlerActions() {
 
-	Log("CORRIENDO HEADER ACTIONS")
+	log("CORRIENDO HEADER ACTIONS")
 }

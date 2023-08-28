@@ -14,27 +14,25 @@ func (d *Dom) currentObject(p []js.Value) error {
 	}
 
 	d.form = p[0].Get("form")
-
-	Log("formulario obtenido 2:", d.form)
+	if d.form.IsUndefined() {
+		return model.Error("en currentObject: no se logro obtener formulario")
+	}
 
 	form_id := d.form.Get("id").String()
 
 	if d.last_object == nil {
-		Log("primer inicio objeto id: " + form_id)
-
+		// log("primer inicio objeto id: " + form_id)
 		return d.getObjectByID(form_id)
 
 	} else {
 
 		if d.last_object.ID() != form_id { //objeto ha cambiado
-
-			Log("objeto nuevo: " + form_id + ", anterior: " + d.last_object.ID())
-
+			log("objeto cambio nuevo: " + form_id + ", anterior: " + d.last_object.ID())
 			return d.getObjectByID(form_id)
 		}
 	}
 
-	Log("*OBJETO ACTUAL: " + d.last_object.ID())
+	log("*OBJETO ACTUAL: "+d.last_object.ID(), "form ok")
 
 	return nil
 }
@@ -47,7 +45,7 @@ func (d *Dom) getObjectByID(id string) error {
 	}
 	d.last_object = object
 
-	Log("*OBJETO ACTUAL: " + d.last_object.ID())
+	log("*OBJETO ACTUAL: " + d.last_object.ID())
 
 	return nil
 }

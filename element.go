@@ -21,7 +21,7 @@ func (e HtmlElement) Add() {
 		// Agregar el nuevo elemento  al dom
 		e.Container.Call("appendChild", html_element)
 
-		Log("Elemento " + e.Name + " agregado al dom")
+		// Log("Elemento " + e.Name + " agregado al dom")
 
 	}
 

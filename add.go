@@ -3,6 +3,7 @@ package dom
 import (
 	"syscall/js"
 
+	"github.com/cdvelop/indexdb"
 	"github.com/cdvelop/model"
 )
 
@@ -27,6 +28,7 @@ func New(t model.Theme, h model.FrontendHeaderHandler, modules ...*model.Module)
 	}
 
 	return &Dom{
+		db:      indexdb.Add(),
 		theme:   t,
 		modules: modules,
 		header:  h,

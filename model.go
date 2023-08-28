@@ -7,6 +7,7 @@ import (
 )
 
 type Dom struct {
+	db      model.DataBaseAdapter
 	theme   model.Theme
 	modules []*model.Module
 	header  model.FrontendHeaderHandler
@@ -15,7 +16,7 @@ type Dom struct {
 
 	last_object *model.Object
 	form        js.Value
-	form_data   map[string]string
+	data_object map[string]string
 
 	timeout_typing js.Value
 }

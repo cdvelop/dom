@@ -6,7 +6,7 @@ import (
 	"github.com/cdvelop/model"
 )
 
-func (Dom) callFunction(functionName string, args ...any) error {
+func callFunction(functionName string, args ...any) error {
 
 	if !js.Global().Get(functionName).Truthy() {
 		return model.Error("la función", functionName, "no existe")
@@ -17,6 +17,25 @@ func (Dom) callFunction(functionName string, args ...any) error {
 	return nil
 }
 
-func Log(message ...any) {
+func log(message ...any) {
 	js.Global().Get("console").Call("log", message...)
+}
+
+func (d Dom) userMessage(text string, options ...string) {
+	// func (d Dom) message(r model.Response) {
+
+	var opt = []interface{}{
+		text,
+	}
+
+	for _, o := range options {
+		opt = append(opt, o)
+	}
+
+	err := callFunction(d.theme.FunctionMessageName(), opt...)
+
+	if err != nil {
+		log(err)
+	}
+
 }

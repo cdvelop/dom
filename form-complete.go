@@ -11,12 +11,12 @@ func (d Dom) FormAutoFill(o *model.Object) {
 
 	test_data, err := o.TestData(1, true, false)
 	if err != nil {
-		Log(err)
+		log(err)
 	}
 
 	err = formComplete(o, test_data[0])
 	if err != nil {
-		Log(err)
+		log(err)
 	}
 
 }
