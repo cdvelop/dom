@@ -7,18 +7,18 @@ import (
 	"github.com/cdvelop/model"
 )
 
-func (d *Dom) currentObject(p []js.Value) error {
+func (d *Dom) currentObject(input []js.Value) error {
 
-	if len(p) != 1 {
-		return model.Error("en currentObject: se esperaban 1 argumentos y se enviaron:", strconv.Itoa(len(p)))
+	if len(input) != 1 {
+		return model.Error("en currentObject: se esperaban 1 argumentos y se enviaron:", strconv.Itoa(len(input)))
 	}
 
-	d.form = p[0].Get("form")
-	if d.form.IsUndefined() {
+	d.html_form = input[0].Get("form")
+	if d.html_form.IsUndefined() {
 		return model.Error("en currentObject: no se logro obtener formulario")
 	}
 
-	form_id := d.form.Get("id").String()
+	form_id := d.html_form.Get("id").String()
 
 	if d.last_object == nil {
 		// log("primer inicio objeto id: " + form_id)
@@ -28,11 +28,13 @@ func (d *Dom) currentObject(p []js.Value) error {
 
 		if d.last_object.ID() != form_id { //objeto ha cambiado
 			log("objeto cambio nuevo: " + form_id + ", anterior: " + d.last_object.ID())
+
+			//reset data formulario
+			d.data_object = nil
+
 			return d.getObjectByID(form_id)
 		}
 	}
-
-	log("*OBJETO ACTUAL: "+d.last_object.ID(), "form ok")
 
 	return nil
 }

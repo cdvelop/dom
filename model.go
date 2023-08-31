@@ -15,8 +15,12 @@ type Dom struct {
 	objects map[string]*model.Object
 
 	last_object *model.Object
-	form        js.Value
+	html_form   js.Value
 	data_object map[string]string
+
+	action_create bool
+	action_update bool
+	action_delete bool
 
 	timeout_typing js.Value
 }
