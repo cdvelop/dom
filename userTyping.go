@@ -24,7 +24,7 @@ func (d *Dom) userTyping(this js.Value, source_input []js.Value) interface{} {
 
 		err = d.validateForm(&source_input[0])
 		if err != nil {
-			log(err.Error())
+			// log(err.Error())
 			return nil
 		}
 

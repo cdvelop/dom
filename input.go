@@ -6,54 +6,52 @@ import (
 	"github.com/cdvelop/model"
 )
 
-func (d Dom) getHtmlInputField(field_name string) (js.Value, error) {
+func (d Dom) getHtmlInput(field *model.Field) (input js.Value, value string, err error) {
 
-	field := d.html_form.Get(field_name)
-	if field.Truthy() {
-		return field, nil
+	input = d.html_form.Get(field.Name)
+	if !input.Truthy() {
+		return js.Value{}, "", model.Error("input html", field.Name, "no encontrado")
 	}
-	return js.Value{}, model.Error("campo input html", field_name, "no encontrado")
-}
+	var temp js.Value
 
-func getHtmlInputValue(fiel model.Field, input, source_input *js.Value) string {
-
-	switch fiel.Input.HtmlName() {
+	switch field.Input.HtmlName() {
 	case "checkbox":
-		var out string
-		var commaNeeded bool // Variable para indicar si se necesita una coma
+		var comma bool
+		// log("checkbox", field.Name)
 
 		for i := 0; i < input.Length(); i++ {
 			check := input.Index(i)
-			// log("checkbox", check)
+			temp = input.Index(i)
+
 			if check.Get("checked").Bool() {
-				if commaNeeded {
-					out += ","
+				if comma {
+					value += ","
 				}
 
-				out += check.Get("value").String()
-				commaNeeded = true // Ahora necesitas una coma para el siguiente elemento
+				value += check.Get("value").String()
+				comma = true // se necesita coma para el siguiente elemento
 			}
 		}
 
-		*input = *source_input
-		return out
+		input = temp
 
 	case "radio":
-		var out string
-		// log("campo de tipo radio")
+		// log("campo de tipo radio", field.Name)
 		for i := 0; i < input.Length(); i++ {
 			radio := input.Index(i)
+			temp = input.Index(i)
 			if radio.Get("checked").Bool() {
-				out = radio.Get("value").String()
+				value = radio.Get("value").String()
 				break
 			}
 		}
-		*input = *source_input
-		return out
+
+		input = temp
 
 	default:
 		// log("campo de una sola entrada")
-		return input.Get("value").String()
-
+		value = input.Get("value").String()
 	}
+
+	return input, value, nil
 }

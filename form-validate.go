@@ -12,51 +12,63 @@ func (d *Dom) validateForm(source_input *js.Value) error {
 		d.data_object = make(map[string]string, len(d.last_object.Fields))
 	}
 
-	// chequear  campos
-	for _, field := range d.last_object.Fields {
+	// 1 chequear input origen
+	source_field_name := source_input.Get("name").String()
 
-		input, err := d.getHtmlInputField(field.Name)
-		if err != nil {
-			return err
-		}
-
-		new_value := getHtmlInputValue(field, &input, source_input)
-
-		// log("---new value:", new_value, "campo:", field.Name)
-
-		if field.IsPrimaryKey(d.last_object) && new_value == "" {
-			//campo tipo id vació
-			continue
-		}
-
-		err = inputRight(&field, input, new_value)
-		if err != nil {
-			return err
-		}
-
-		if d.data_object[field.Name] != new_value {
-
-			log("cambio en valor campo:", field.Name, "valor:", new_value)
-
-			d.data_object[field.Name] = new_value
-		}
-
+	source_field, err := d.last_object.GetFieldByName(source_field_name)
+	if err != nil {
+		return err
 	}
 
-	// var its_update_or_delete bool
-	// if d.action_delete || d.action_update {
-	// 	its_update_or_delete = true
-	// }
+	input, new_value, err := d.getHtmlInput(&source_field)
+	if err != nil {
+		return err
+	}
 
-	// if d.action_create {
-	// 	log("create true")
-	// } else {
-	// 	log("create false")
-	// }
+	err = d.fieldCheck(&source_field, &input, new_value)
+	if err != nil {
+		return err
+	}
+
+	// 2 chequear todos los input menos origen
+	for _, field := range d.last_object.Fields {
+
+		if field.Name != source_field_name {
+
+			input, new_value, err := d.getHtmlInput(&field)
+			if err != nil {
+				return err
+			}
+
+			err = d.fieldCheck(&field, &input, new_value)
+			if err != nil {
+				return err
+			}
+		}
+	}
 
 	log("*RESUMEN FORMULARIO:")
 	for key, value := range d.data_object {
 		log("FIELD NAME: ", key, " VALUE: ", value)
+	}
+
+	return nil
+}
+
+func (d *Dom) fieldCheck(field *model.Field, input *js.Value, new_value string) error {
+
+	if field.IsPrimaryKey(d.last_object) && new_value == "" {
+		return nil
+	}
+
+	err := inputRight(field, *input, new_value)
+	if err != nil {
+		return err
+	}
+
+	if d.data_object[field.Name] != new_value {
+		log("---new value:", new_value, "campo:", field.Name)
+		d.data_object[field.Name] = new_value
 	}
 
 	return nil
@@ -108,7 +120,7 @@ func inputRight(field *model.Field, input js.Value, new_value string) error {
 		return nil
 	}
 
-	js.Global().Call("inputWrong", input, "malo")
+	js.Global().Call("inputWrong", input, err.Error())
 
-	return model.Error("campo", field.Legend, "no valido")
+	return model.Error("campo", field.Legend, "no valido", err.Error())
 }
