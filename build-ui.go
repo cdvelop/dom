@@ -4,7 +4,9 @@ import "strconv"
 
 func (d Dom) BuildUI() {
 
-	log("¡Hi 7 Go y WebAssembly!")
+	log("¡Hi 8 Go y WebAssembly!")
+
+	d.ReadBootDataActions()
 
 	d.buildMenu()
 

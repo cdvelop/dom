@@ -4,7 +4,7 @@ import (
 	"syscall/js"
 )
 
-func (d *Dom) userTyping(this js.Value, source_input []js.Value) interface{} {
+func (d *Dom) userFormTyping(this js.Value, source_input []js.Value) interface{} {
 
 	if d.timeout_typing.Truthy() {
 		// Si hay un temporizador en curso, lo cancelamos
