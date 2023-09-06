@@ -17,12 +17,7 @@ func init() {
 	body = doc.Get("body")
 }
 
-func New(t model.Theme, a model.FrontendAuthHandler, modules ...*model.Module) *Dom {
-
-	var auth model.FrontendAuthHandler
-	if a == nil {
-		auth = model.DefaultAuthHandler{}
-	}
+func New(t model.Theme, modules ...*model.Module) *Dom {
 
 	objects := map[string]*model.Object{}
 
@@ -36,7 +31,6 @@ func New(t model.Theme, a model.FrontendAuthHandler, modules ...*model.Module) *
 		db:      indexdb.Add(),
 		theme:   t,
 		modules: modules,
-		auth:    auth,
 		objects: objects,
 	}
 }

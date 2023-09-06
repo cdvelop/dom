@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/cdvelop/indexdb v0.0.1
-	github.com/cdvelop/model v0.0.44
+	github.com/cdvelop/model v0.0.45
 )
 
 replace github.com/cdvelop/model => ../model

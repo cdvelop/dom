@@ -10,7 +10,6 @@ type Dom struct {
 	db      model.DataBaseAdapter
 	theme   model.Theme
 	modules []*model.Module
-	auth    model.FrontendAuthHandler
 	// object_id + object
 	objects map[string]*model.Object
 
