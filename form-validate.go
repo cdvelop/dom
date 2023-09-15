@@ -47,9 +47,9 @@ func (d *Dom) validateForm(source_input *js.Value) error {
 		}
 	}
 
-	log("*RESUMEN FORMULARIO:")
+	d.Log("*RESUMEN FORMULARIO:")
 	for key, value := range d.data_object {
-		log("FIELD NAME: ", key, " VALUE: ", value)
+		d.Log("FIELD NAME: ", key, " VALUE: ", value)
 	}
 
 	return nil
@@ -67,7 +67,7 @@ func (d *Dom) fieldCheck(field *model.Field, input *js.Value, new_value string) 
 	}
 
 	if d.data_object[field.Name] != new_value {
-		log("---new value:", new_value, "campo:", field.Name)
+		d.Log("---new value:", new_value, "campo:", field.Name)
 		d.data_object[field.Name] = new_value
 	}
 
@@ -80,20 +80,20 @@ func (d *Dom) setActionType() {
 
 	if exist {
 
-		log("id existe y no este vació:", id)
+		d.Log("id existe y no este vació:", id)
 		d.action_create = false
 
 		if !d.action_delete {
 			d.action_update = true
-			log("acción es de tipo update")
+			d.Log("acción es de tipo update")
 
 		} else {
-			log("acción es de tipo delete")
+			d.Log("acción es de tipo delete")
 		}
 
 	} else {
 
-		log("no hay id es un objeto nuevo")
+		d.Log("no hay id es un objeto nuevo")
 
 		d.action_create = true
 		d.action_update = false
@@ -109,7 +109,7 @@ func inputRight(field *model.Field, input js.Value, new_value string) error {
 	err := field.Input.Validate.ValidateField(new_value, field.SkipCompletionAllowed, data_option)
 	if err == nil {
 
-		// log("value: ", new_value, " input: ", input)
+		// d.Log("value: ", new_value, " input: ", input)
 
 		if new_value != "" {
 			js.Global().Call("inputRight", input)

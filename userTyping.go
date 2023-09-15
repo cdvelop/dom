@@ -14,23 +14,23 @@ func (d *Dom) userFormTyping(this js.Value, source_input []js.Value) interface{}
 	// Configuramos un nuevo temporizador para 500 milisegundos
 	d.timeout_typing = js.Global().Call("setTimeout", js.FuncOf(func(this js.Value, null []js.Value) interface{} {
 
-		// Log("ejecutando acción después de 500 milisegundos")
+		// d.Log("ejecutando acción después de 500 milisegundos")
 
 		err := d.currentObject(source_input)
 		if err != nil {
-			log(err.Error())
+			d.Log(err.Error())
 			return nil
 		}
 
 		err = d.validateForm(&source_input[0])
 		if err != nil {
-			// log(err.Error())
+			// d.Log(err.Error())
 			return nil
 		}
 
 		d.setActionType()
 
-		log("formulario correcto")
+		d.Log("formulario correcto")
 
 		// err = d.db.CreateObjectsInDB()
 

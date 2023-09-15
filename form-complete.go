@@ -11,12 +11,12 @@ func (d Dom) FormAutoFill(o *model.Object) {
 
 	test_data, err := o.TestData(1, true, false)
 	if err != nil {
-		log(err)
+		d.Log(err)
 	}
 
 	err = formComplete(o, test_data[0])
 	if err != nil {
-		log(err)
+		d.Log(err)
 	}
 
 }
@@ -27,13 +27,14 @@ func formComplete(o *model.Object, data map[string]string) error {
 		return model.Error("formComplete object nil")
 	}
 
-	module_html := body.Call("querySelector", "#"+o.ModuleName())
-	if module_html.IsNull() {
-		return model.Error("formComplete no se logro obtener modulo html")
+	module_html, err := getHtmlModule(o.ModuleName)
+	if err != nil {
+		return err
 	}
 
-	form := module_html.Call("querySelector", "form", "#"+o.ID())
-	if form.IsNull() {
+	form := module_html.Call("querySelector", `form[name="`+o.Name+`"]`)
+	// form := module_html.Call("querySelector", "form", "#"+o.Name)
+	if !form.Truthy() {
 		return model.Error("formComplete error no se logro obtener formulario")
 	}
 

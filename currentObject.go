@@ -18,36 +18,37 @@ func (d *Dom) currentObject(input []js.Value) error {
 		return model.Error("en currentObject: no se logro obtener formulario")
 	}
 
-	form_id := d.html_form.Get("id").String()
+	form_name := d.html_form.Get("name").String()
 
 	if d.last_object == nil {
-		// log("primer inicio objeto id: " + form_id)
-		return d.getObjectByID(form_id)
+		// log("primer inicio objeto id: " + form_name)
+		return d.setCurrentObject(form_name)
 
 	} else {
 
-		if d.last_object.ID() != form_id { //objeto ha cambiado
-			log("objeto cambio nuevo: " + form_id + ", anterior: " + d.last_object.ID())
+		if d.last_object.Name != form_name { //objeto ha cambiado
+			d.Log("objeto cambio nuevo: " + form_name + ", anterior: " + d.last_object.Name)
 
 			//reset data formulario
 			d.data_object = nil
 
-			return d.getObjectByID(form_id)
+			return d.setCurrentObject(form_name)
 		}
 	}
 
 	return nil
 }
 
-func (d *Dom) getObjectByID(id string) error {
+func (d *Dom) setCurrentObject(object_name string) error {
 
-	object, exist := d.objects[id] //id objeto
-	if !exist {
-		return model.Error("error no se encontró objeto id:", id)
+	object, err := d.getObjectByName(object_name)
+	if err != nil {
+		return err
 	}
+
 	d.last_object = object
 
-	log("*OBJETO ACTUAL: " + d.last_object.ID())
+	d.Log("*OBJETO ACTUAL:", d.last_object.Name)
 
 	return nil
 }

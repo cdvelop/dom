@@ -17,7 +17,7 @@ func callFunction(functionName string, args ...any) error {
 	return nil
 }
 
-func log(message ...any) {
+func (d Dom) Log(message ...any) {
 	js.Global().Get("console").Call("log", message...)
 }
 
@@ -35,7 +35,7 @@ func (d Dom) userMessage(text string, options ...string) {
 	err := callFunction(d.theme.FunctionMessageName(), opt...)
 
 	if err != nil {
-		log(err)
+		d.Log(err)
 	}
 
 }

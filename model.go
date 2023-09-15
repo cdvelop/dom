@@ -10,8 +10,7 @@ type Dom struct {
 	db      model.DataBaseAdapter
 	theme   model.Theme
 	modules []*model.Module
-	// object_id + object
-	objects map[string]*model.Object
+	objects []*model.Object
 
 	last_object *model.Object
 	html_form   js.Value
