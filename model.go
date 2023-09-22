@@ -8,7 +8,7 @@ import (
 
 type Dom struct {
 	db      model.DataBaseAdapter
-	theme   model.Theme
+	theme   model.ThemeAdapter
 	modules []*model.Module
 	objects []*model.Object
 

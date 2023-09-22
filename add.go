@@ -3,6 +3,7 @@ package dom
 import (
 	"syscall/js"
 
+	"github.com/cdvelop/indexdb"
 	"github.com/cdvelop/model"
 )
 
@@ -16,14 +17,25 @@ func init() {
 	body = doc.Get("body")
 }
 
-func New(t model.Theme, db model.DataBaseAdapter) *Dom {
+func New(h *model.ModuleHandlers) *Dom {
 
-	return &Dom{
-		db:      db,
-		theme:   t,
-		modules: nil,
-		objects: nil,
+	new := Dom{
+		db:             h.DBA,
+		theme:          h.Theme,
+		modules:        []*model.Module{},
+		objects:        []*model.Object{},
+		last_object:    &model.Object{},
+		html_form:      js.Value{},
+		data_object:    map[string]string{},
+		action_create:  false,
+		action_update:  false,
+		action_delete:  false,
+		timeout_typing: js.Value{},
 	}
+
+	h.DOM = new
+
+	return &new
 }
 
 func (d *Dom) AddModules(modules ...*model.Module) {
@@ -31,11 +43,11 @@ func (d *Dom) AddModules(modules ...*model.Module) {
 	objects := []*model.Object{}
 
 	for _, m := range modules {
-		for _, o := range m.Objects {
-			objects = append(objects, o)
-		}
+		objects = append(objects, m.Objects...)
 	}
 
 	d.modules = modules
 	d.objects = objects
+
+	d.db = indexdb.Add(objects)
 }
