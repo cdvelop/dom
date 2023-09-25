@@ -7,20 +7,21 @@ import (
 )
 
 type Dom struct {
-	db      model.DataBaseAdapter
-	theme   model.ThemeAdapter
+	db    model.DataBaseAdapter
+	theme model.ThemeAdapter
+
 	modules []*model.Module
 	objects []*model.Object
 
 	last_object *model.Object
-	html_form   js.Value
-	data_object map[string]string
+	html_form   js.Value          //form
+	data_object map[string]string //form
 
-	action_create bool
-	action_update bool
-	action_delete bool
+	action_create bool //form
+	action_update bool //form
+	action_delete bool //form
 
-	timeout_typing js.Value
+	timeout_typing js.Value //form
 }
 
 type HtmlElement struct {
