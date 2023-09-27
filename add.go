@@ -3,7 +3,7 @@ package dom
 import (
 	"syscall/js"
 
-	"github.com/cdvelop/indexdb"
+	"github.com/cdvelop/cutkey"
 	"github.com/cdvelop/model"
 )
 
@@ -20,8 +20,7 @@ func init() {
 func New(h *model.ModuleHandlers) *Dom {
 
 	new := Dom{
-		db:             h.DBA,
-		theme:          h.Theme,
+		h:              h,
 		modules:        []*model.Module{},
 		objects:        []*model.Object{},
 		last_object:    &model.Object{},
@@ -33,7 +32,7 @@ func New(h *model.ModuleHandlers) *Dom {
 		timeout_typing: js.Value{},
 	}
 
-	h.DOM = new
+	h.DOM = &new
 
 	return &new
 }
@@ -49,5 +48,7 @@ func (d *Dom) AddModules(modules ...*model.Module) {
 	d.modules = modules
 	d.objects = objects
 
-	d.db = indexdb.Add(objects)
+	d.h.DBA.CreateTablesInDB(objects, d)
+
+	d.cut = cutkey.Add(objects...)
 }

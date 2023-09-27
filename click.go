@@ -8,7 +8,7 @@ func (d Dom) ClickModule(module string) {
 
 	for _, m := range d.modules {
 		if m.ModuleName == module {
-			menuButton := doc.Call("querySelector", d.theme.MenuClassName()+" a[name='"+module+"']")
+			menuButton := doc.Call("querySelector", d.h.THEME.MenuClassName()+" a[name='"+module+"']")
 			if !menuButton.IsUndefined() {
 				delayedClick(menuButton)
 			}

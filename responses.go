@@ -19,24 +19,30 @@ func (d Dom) domUpdate(responses ...model.Response) {
 
 			if object.FrontendHandler.AfterCreate != nil {
 
-				module_html, err := getHtmlModule(object.ModuleName)
+				// module_html, err := getHtmlModule(object.ModuleName)
+				// if err != nil {
+				// 	d.Log(err)
+				// 	continue
+				// }
+
+				err = object.FrontendHandler.AfterCreate.SetObjectInDomAfterCreate(r.Data...)
 				if err != nil {
-					d.Log(err)
+					d.UserMessage(err.Error(), "err")
 					continue
 				}
 
-				container_id, tags := object.FrontendHandler.AfterCreate.SetObjectInDomAfterCreate(r.Data...)
-
-				html_container := module_html.Call("querySelector", `div[data-id="`+container_id+`"]`)
-				if !html_container.Truthy() {
-					d.Log("error no se logro obtener contenedor data-id:", container_id, "objeto:", object.Name)
-					continue
-				}
+				// html_container := module_html.Call("querySelector", `div[data-id="`+container_id+`"]`)
+				// if !html_container.Truthy() {
+				// 	d.Log("error no se logro obtener contenedor data-id:", container_id, "objeto:", object.Name)
+				// 	continue
+				// }
 
 				// html_container.Set("insertBefore", tags)
 
-				html_container.Call("insertAdjacentHTML", "beforeend", tags)
+				// html_container.Call("insertAdjacentHTML", "beforeend", tags)
 
+			} else {
+				d.Log("objeto", object.Name, "no contiene AfterCreate")
 			}
 
 		case "read":
@@ -46,7 +52,7 @@ func (d Dom) domUpdate(responses ...model.Response) {
 		case "delete":
 			d.Log("HANDLER delete NO CREADO EN DOM")
 		case "error":
-			d.Log("HANDLER error NO CREADO EN DOM")
+			d.UserMessage(r.Message, "err")
 
 		}
 

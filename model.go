@@ -3,12 +3,14 @@ package dom
 import (
 	"syscall/js"
 
+	"github.com/cdvelop/cutkey"
 	"github.com/cdvelop/model"
 )
 
 type Dom struct {
-	db    model.DataBaseAdapter
-	theme model.ThemeAdapter
+	h *model.ModuleHandlers
+
+	cut *cutkey.Cut
 
 	modules []*model.Module
 	objects []*model.Object

@@ -21,7 +21,7 @@ func (d Dom) Log(message ...any) {
 	js.Global().Get("console").Call("log", message...)
 }
 
-func (d Dom) userMessage(text string, options ...string) {
+func (d Dom) UserMessage(text string, options ...string) {
 	// func (d Dom) message(r model.Response) {
 
 	var opt = []interface{}{
@@ -32,7 +32,7 @@ func (d Dom) userMessage(text string, options ...string) {
 		opt = append(opt, o)
 	}
 
-	err := callFunction(d.theme.FunctionMessageName(), opt...)
+	err := callFunction(d.h.THEME.FunctionMessageName(), opt...)
 
 	if err != nil {
 		d.Log(err)
