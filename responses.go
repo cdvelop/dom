@@ -2,11 +2,11 @@ package dom
 
 import "github.com/cdvelop/model"
 
-func (d Dom) domUpdate(responses ...model.Response) {
+func (d Dom) addDataToLocalDB(responses ...model.Response) {
 
 	for _, r := range responses {
 
-		d.Log("domUpdate .... buscando objeto", r.Object)
+		// d.Log("domUpdate .... buscando objeto", r.Object)
 
 		object, err := d.getObjectByName(r.Object)
 		if err != nil {

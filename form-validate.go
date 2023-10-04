@@ -15,17 +15,17 @@ func (d *Dom) validateForm(source_input *js.Value) error {
 	// 1 chequear input origen
 	source_field_name := source_input.Get("name").String()
 
-	source_field, err := d.last_object.GetFieldByName(source_field_name)
+	source_fields, err := d.last_object.GetFieldsByNames(source_field_name)
 	if err != nil {
 		return err
 	}
 
-	input, new_value, err := d.getHtmlInput(&source_field)
+	input, new_value, err := d.getHtmlInput(&source_fields[0])
 	if err != nil {
 		return err
 	}
 
-	err = d.fieldCheck(&source_field, &input, new_value)
+	err = d.fieldCheck(&source_fields[0], &input, new_value)
 	if err != nil {
 		return err
 	}
