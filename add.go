@@ -4,7 +4,9 @@ import (
 	"syscall/js"
 
 	"github.com/cdvelop/cutkey"
+	"github.com/cdvelop/formclient"
 	"github.com/cdvelop/model"
+	"github.com/cdvelop/timeclient"
 )
 
 var (
@@ -20,19 +22,17 @@ func init() {
 func New(h *model.ModuleHandlers) *Dom {
 
 	new := Dom{
-		h:              h,
-		modules:        []*model.Module{},
-		objects:        []*model.Object{},
-		last_object:    &model.Object{},
-		html_form:      js.Value{},
-		data_object:    map[string]string{},
-		action_create:  false,
-		action_update:  false,
-		action_delete:  false,
-		timeout_typing: js.Value{},
+		h:       h,
+		cut:     &cutkey.Cut{},
+		modules: []*model.Module{},
+		objects: []*model.Object{},
+		form:    nil,
 	}
 
 	h.DOM = &new
+	h.TIME = timeclient.TimeCLient{}
+
+	new.form = formclient.Add(&new)
 
 	return &new
 }

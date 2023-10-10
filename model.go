@@ -4,6 +4,7 @@ import (
 	"syscall/js"
 
 	"github.com/cdvelop/cutkey"
+	"github.com/cdvelop/formclient"
 	"github.com/cdvelop/model"
 )
 
@@ -15,15 +16,7 @@ type Dom struct {
 	modules []*model.Module
 	objects []*model.Object
 
-	last_object *model.Object
-	html_form   js.Value          //form
-	data_object map[string]string //form
-
-	action_create bool //form
-	action_update bool //form
-	action_delete bool //form
-
-	timeout_typing js.Value //form
+	form *formclient.FormClient
 }
 
 type HtmlElement struct {

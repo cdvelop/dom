@@ -6,7 +6,7 @@ import (
 	"github.com/cdvelop/model"
 )
 
-func getHtmlModule(module_name string) (*js.Value, error) {
+func (Dom) GetHtmlModule(module_name string) (*js.Value, error) {
 
 	module_html := body.Call("querySelector", "#"+module_name)
 	if !module_html.Truthy() {

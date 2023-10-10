@@ -8,7 +8,7 @@ func (d Dom) addBootDataToLocalDB(responses ...model.Response) {
 
 		// d.Log("domUpdate .... buscando objeto", r.Object)
 
-		object, err := d.getObjectByName(r.Object)
+		object, err := d.GetObjectByName(r.Object)
 		if err != nil {
 			d.Log(err)
 			continue

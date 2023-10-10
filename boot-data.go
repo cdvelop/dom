@@ -2,7 +2,7 @@ package dom
 
 func (d Dom) ActionExecutedLater() {
 
-	d.Log("CORRIENDO ACTIONS DATA DE ARRANQUE")
+	// d.Log("CORRIENDO ACTIONS DATA DE ARRANQUE")
 
 	meta := doc.Call("querySelector", "meta[name='JsonBootActions']")
 	if !meta.Truthy() {

@@ -1,7 +1,11 @@
 package dom
 
-import "syscall/js"
+import (
+	"syscall/js"
+)
 
-func (d Dom) registerGlobalFunctions() {
-	js.Global().Set("userFormTyping", js.FuncOf(d.userFormTyping))
+func (d *Dom) registerGlobalFunctions() {
+
+	js.Global().Set("userFormTyping", js.FuncOf(d.form.UserFormTyping))
+
 }
