@@ -6,7 +6,7 @@ import (
 	"github.com/cdvelop/model"
 )
 
-func callFunction(functionName string, args ...any) error {
+func (d Dom) CallFunction(functionName string, args ...any) error {
 
 	if !js.Global().Get(functionName).Truthy() {
 		return model.Error("la función", functionName, "no existe")
@@ -17,7 +17,7 @@ func callFunction(functionName string, args ...any) error {
 	return nil
 }
 
-func (d Dom) Log(message ...any) {
+func (d Dom) Log(message ...any) interface{} {
 
 	for i, msg := range message {
 		// Comprueba si el mensaje es de tipo error
@@ -28,23 +28,46 @@ func (d Dom) Log(message ...any) {
 	}
 
 	js.Global().Get("console").Call("log", message...)
+
+	return nil
 }
 
-func (d Dom) UserMessage(text string, options ...string) {
-	// func (d Dom) message(r model.Response) {
+func (d Dom) UserMessage(message ...any) interface{} {
+
+	var space string
 
 	var opt = []interface{}{
-		text,
+		"",
 	}
 
-	for _, o := range options {
-		opt = append(opt, o)
+	for _, msg := range message {
+		// Comprueba si el mensaje es de tipo error
+		if err, isError := msg.(error); isError {
+
+			opt[0] = opt[0].(string) + space + err.Error()
+
+			opt = append(opt, "err")
+
+			// Comprueba si el mensaje es de tipo string
+		} else if textNew, isString := msg.(string); isString {
+
+			switch textNew {
+			case "del", "perm", "stop", "err", "error":
+				opt = append(opt, textNew)
+			default:
+
+				opt[0] = opt[0].(string) + space + textNew
+			}
+		}
+
+		space = " "
 	}
 
-	err := callFunction(d.h.THEME.FunctionMessageName(), opt...)
+	err := d.CallFunction(d.h.THEME.FunctionMessageName(), opt...)
 
 	if err != nil {
 		d.Log(err)
 	}
 
+	return nil
 }
