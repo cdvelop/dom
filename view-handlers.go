@@ -1,36 +1,37 @@
 package dom
 
 import (
-	"syscall/js"
-
 	"github.com/cdvelop/model"
 )
 
-func (d Dom) InsertAfterBegin(vHandlers ...model.ViewHandler) {
-	d.insertInDom("afterbegin", vHandlers...)
+func (d Dom) InnerHTML(html_content string, o *model.Object) {
+
+	container, err := d.GetHtmlContainer(o)
+	if err != nil {
+		d.Log(err)
+		return
+	}
+
+	container.Set("innerHTML", html_content)
+
 }
 
-func (d Dom) InsertBeforeEnd(vHandlers ...model.ViewHandler) {
-	d.insertInDom("beforeend", vHandlers...)
+func (d Dom) InsertAfterBegin(html_content string, o *model.Object) {
+	d.insertInDom("afterbegin", html_content, o)
+}
+
+func (d Dom) InsertBeforeEnd(html_content string, o *model.Object) {
+	d.insertInDom("beforeend", html_content, o)
 }
 
 // where ej: afterbegin,beforeend
-func (d Dom) insertInDom(where string, vHandlers ...model.ViewHandler) {
-	var container js.Value
+func (d Dom) insertInDom(where, html_content string, o *model.Object) {
 
-	for _, v := range vHandlers {
-
-		if !container.Truthy() {
-			container = doc.Call("querySelector", "div#"+v.ObjectVIEW().ModuleName+" div[data-id='"+v.ObjectVIEW().Name+"']")
-			if !container.Truthy() {
-				d.Log("error no se logro obtener contenedor objeto:", v.ObjectVIEW().Name)
-				break
-			}
-		}
-
-		container.Call("insertAdjacentHTML", where, v.BuildTag())
-
-		// d.Log("InsertAfterBegin Object:", v.ObjectVIEW().Name)
+	container, err := d.GetHtmlContainer(o)
+	if err != nil {
+		d.Log(err)
+		return
 	}
-	// d.Log("contenedor:", container)
+
+	container.Call("insertAdjacentHTML", where, html_content)
 }

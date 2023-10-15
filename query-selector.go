@@ -6,6 +6,16 @@ import (
 	"github.com/cdvelop/model"
 )
 
+func (d Dom) GetHtmlContainer(o *model.Object) (*js.Value, error) {
+
+	container := doc.Call("querySelector", "div#"+o.ModuleName+" [data-id='"+o.Name+"']")
+	if container.Truthy() {
+		return &container, nil
+	}
+
+	return nil, model.Error("error no se logro obtener contenedor objeto:", o.Name)
+}
+
 func (Dom) GetHtmlModule(module_name string) (*js.Value, error) {
 
 	module_html := body.Call("querySelector", "#"+module_name)
