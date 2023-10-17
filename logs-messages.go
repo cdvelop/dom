@@ -2,20 +2,7 @@ package dom
 
 import (
 	"syscall/js"
-
-	"github.com/cdvelop/model"
 )
-
-func (d Dom) CallFunction(functionName string, args ...any) error {
-
-	if !js.Global().Get(functionName).Truthy() {
-		return model.Error("la función", functionName, "no existe")
-	}
-
-	js.Global().Call(functionName, args...)
-
-	return nil
-}
 
 func (d Dom) Log(message ...any) interface{} {
 

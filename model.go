@@ -16,7 +16,7 @@ type Dom struct {
 	modules []*model.Module
 	objects []*model.Object
 
-	form *formclient.FormClient
+	*formclient.FormClient
 }
 
 type HtmlElement struct {

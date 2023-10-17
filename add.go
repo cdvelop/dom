@@ -22,17 +22,17 @@ func init() {
 func New(h *model.ModuleHandlers) *Dom {
 
 	new := Dom{
-		h:       h,
-		cut:     &cutkey.Cut{},
-		modules: []*model.Module{},
-		objects: []*model.Object{},
-		form:    nil,
+		h:          h,
+		cut:        &cutkey.Cut{},
+		modules:    []*model.Module{},
+		objects:    []*model.Object{},
+		FormClient: nil,
 	}
 
 	h.DOM = &new
 	h.TIME = timeclient.TimeCLient{}
 
-	new.form = formclient.Add(&new)
+	new.FormClient = formclient.Add(&new)
 
 	return &new
 }
