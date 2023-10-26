@@ -5,6 +5,7 @@ import (
 
 	"github.com/cdvelop/cutkey"
 	"github.com/cdvelop/formclient"
+	"github.com/cdvelop/logclient"
 	"github.com/cdvelop/model"
 	"github.com/cdvelop/timeclient"
 )
@@ -19,7 +20,7 @@ func init() {
 	body = doc.Get("body")
 }
 
-func New(h *model.ModuleHandlers) *Dom {
+func New(h *model.Handlers) *Dom {
 
 	new := Dom{
 		h:          h,
@@ -27,10 +28,11 @@ func New(h *model.ModuleHandlers) *Dom {
 		modules:    []*model.Module{},
 		objects:    []*model.Object{},
 		FormClient: nil,
+		Logger:     logclient.Log{},
 	}
 
-	h.DOM = &new
-	h.TIME = timeclient.TimeCLient{}
+	h.DomAdapter = &new
+	h.TimeAdapter = timeclient.TimeCLient{}
 
 	new.FormClient = formclient.Add(&new)
 
@@ -48,7 +50,7 @@ func (d *Dom) AddModules(modules ...*model.Module) {
 	d.modules = modules
 	d.objects = objects
 
-	d.h.DBA.CreateTablesInDB(objects, d)
+	d.h.CreateTablesInDB(objects, d)
 
 	d.cut = cutkey.Add(objects...)
 }

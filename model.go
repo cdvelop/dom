@@ -9,7 +9,7 @@ import (
 )
 
 type Dom struct {
-	h *model.ModuleHandlers
+	h *model.Handlers
 
 	cut *cutkey.Cut
 
@@ -17,6 +17,8 @@ type Dom struct {
 	objects []*model.Object
 
 	*formclient.FormClient
+
+	model.Logger
 }
 
 type HtmlElement struct {

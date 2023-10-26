@@ -10,7 +10,7 @@ func (d Dom) ClickModule(module string) error {
 
 	for _, m := range d.modules {
 		if m.ModuleName == module {
-			menuButton := doc.Call("querySelector", d.h.THEME.MenuClassName()+" a[name='"+module+"']")
+			menuButton := doc.Call("querySelector", d.h.MenuClassName()+" a[name='"+module+"']")
 			if !menuButton.IsUndefined() {
 				delayed()
 				menuButton.Call("click")
@@ -93,7 +93,7 @@ func (d Dom) UserViewComponentClicked(this js.Value, source_input []js.Value) in
 	if object.AfterClicked != nil {
 
 		//1- leer data del objeto
-		d.h.DBA.ReadDataAsyncInDB(
+		d.h.ReadDataAsyncInDB(
 			object.Table,
 			[]map[string]string{{
 				"WHERE": object.PrimaryKeyName(),

@@ -16,7 +16,7 @@ func (d Dom) addBootDataToLocalDB(responses ...model.Response) {
 
 		if r.Action == "create" {
 
-			err := d.h.DBA.CreateObjectsInDB(object.Table, r.Data...)
+			err := d.h.CreateObjectsInDB(object.Table, r.Data...)
 			if err != nil {
 				d.UserMessage(err.Error(), "err")
 				continue
