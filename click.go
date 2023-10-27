@@ -35,6 +35,10 @@ func (d Dom) Clicking(o *model.Object, id string) error {
 		return err
 	}
 
+	if o.ViewHandler == nil {
+		return model.Error("error objeto", o.Name, "no tiene controlador ViewHandler para realizar click")
+	}
+
 	err = d.CallFunction(o.ViewComponentName()+"Clicking", *module_html, id)
 	if err != nil {
 		return err

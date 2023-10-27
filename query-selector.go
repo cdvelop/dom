@@ -8,7 +8,7 @@ import (
 
 func (d Dom) GetHtmlContainer(o *model.Object) (*js.Value, error) {
 
-	container := doc.Call("querySelector", "div#"+o.ModuleName+" [data-id='"+o.Name+"']")
+	container := doc.Call("querySelector", d.h.QuerySelectorObject(o.ModuleName, o.Name))
 	if container.Truthy() {
 		return &container, nil
 	}
