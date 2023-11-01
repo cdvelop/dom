@@ -34,7 +34,7 @@ func New(h *model.Handlers) *Dom {
 	h.DomAdapter = &new
 	h.TimeAdapter = timeclient.TimeCLient{}
 
-	new.FormClient = formclient.Add(&new)
+	new.FormClient = formclient.Add(&new, h.DataBaseAdapter)
 
 	return &new
 }
