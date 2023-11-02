@@ -39,7 +39,7 @@ func (d Dom) Clicking(o *model.Object, id string) error {
 		return model.Error("error objeto", o.Name, "no tiene controlador ViewHandler para realizar click")
 	}
 
-	err = d.CallFunction(o.ViewComponentName()+"Clicking", *module_html, id)
+	err = d.CallFunction(o.ViewHandlerName()+"Clicking", *module_html, id)
 	if err != nil {
 		return err
 	}
@@ -61,7 +61,7 @@ func (d Dom) ClickingNEW(o *model.Object, id string) (err error) {
 	startTime := js.Global().Get("Date").New().Call("getTime").Int()
 
 	for retries := 0; retries < maxRetries; retries++ {
-		err = d.CallFunction(o.ViewComponentName()+"Clicking", *moduleHTML, id)
+		err = d.CallFunction(o.ViewHandlerName()+"Clicking", *moduleHTML, id)
 		if err == nil {
 			return nil // Éxito, no hay error
 		}
