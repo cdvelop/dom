@@ -5,9 +5,9 @@ import (
 
 	"github.com/cdvelop/cutkey"
 	"github.com/cdvelop/formclient"
+	"github.com/cdvelop/httpclient"
 	"github.com/cdvelop/logclient"
 	"github.com/cdvelop/model"
-	"github.com/cdvelop/timeclient"
 )
 
 var (
@@ -32,7 +32,6 @@ func New(h *model.Handlers) *Dom {
 	}
 
 	h.DomAdapter = &new
-	h.TimeAdapter = timeclient.TimeCLient{}
 
 	new.FormClient = formclient.Add(&new, h.DataBaseAdapter)
 
@@ -53,4 +52,12 @@ func (d *Dom) AddModules(modules ...*model.Module) {
 	d.h.CreateTablesInDB(objects, d)
 
 	d.cut = cutkey.Add(objects...)
+
+	http, err := httpclient.Add(d.h.Logger, d.cut)
+	if err != nil {
+		d.Log(err)
+	}
+
+	// añadimos el controlador http
+	d.h.HttpAdapter = http
 }

@@ -1,5 +1,6 @@
 package dom
 
+// support: error,string
 func (d Dom) UserMessage(message ...any) interface{} {
 
 	var space string
