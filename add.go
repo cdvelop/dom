@@ -32,6 +32,7 @@ func New(h *model.Handlers) *Dom {
 	}
 
 	h.DomAdapter = &new
+	h.ObjectAdapter = &new
 
 	new.FormClient = formclient.Add(&new, h.DataBaseAdapter)
 

@@ -26,59 +26,60 @@ func (d Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 
 	d.Log("ELIMINANDO OBJETO:", o.Name, "object_id", object_id)
 
-	d.h.ReadDataAsyncInDB(
-		o.Table,
-		[]map[string]string{{
-			"WHERE": o.PrimaryKeyName(),
-			"ID":    object_id,
-		},
-		}, func(data []map[string]string, err error) {
+	d.h.ReadStringDataAsyncInDB(model.ReadDBParams{
+		FROM_TABLE:      o.Table,
+		ID:              object_id,
+		WHERE:           []string{},
+		SEARCH_ARGUMENT: "",
+		ORDER_BY:        "",
+		SORT_DESC:       false,
+	}, func(data []map[string]string, err error) {
 
-			if err != nil {
-				d.Log(err)
+		if err != nil {
+			d.Log(err)
+			return
+		}
+
+		for _, data := range data {
+			d.Log("DATA:", data)
+		}
+
+		if len(data) != 1 {
+			d.UserMessage("error", "se esperaba solo un objeto a eliminar")
+			return
+		}
+
+		d.Log("* id-", object_id, "eliminar en local")
+		// err = d.DeleteObjectsInDB(o.Table, data...)
+		// if err != nil {
+		// 	d.UserMessage("error", err)
+		// 	return
+		// }
+		// Verificar si el objeto existe en el servidor.
+		if data[0]["backup"] != "false" {
+			d.Log("* id-", object_id, " eliminar en el servidor")
+
+			if d.h.HttpAdapter == nil {
+				d.Log("*error httpAdapter nulo en objeto", o.Name)
 				return
 			}
 
-			for _, data := range data {
-				d.Log("DATA:", data)
-			}
+			d.h.SendJson(o, data, "delete", func(r []model.Response, err error) {
 
-			if len(data) != 1 {
-				d.UserMessage("error", "se esperaba solo un objeto a eliminar")
-				return
-			}
-
-			d.Log("* id-", object_id, "eliminar en local")
-			// err = d.DeleteObjectsInDB(o.Table, data...)
-			// if err != nil {
-			// 	d.UserMessage("error", err)
-			// 	return
-			// }
-			// Verificar si el objeto existe en el servidor.
-			if data[0]["backup"] != "false" {
-				d.Log("* id-", object_id, " eliminar en el servidor")
-
-				if d.h.HttpAdapter == nil {
-					d.Log("*error httpAdapter nulo en objeto", o.Name)
+				if err != nil {
+					d.Log(err)
 					return
 				}
 
-				d.h.SendJson(o, data, "delete", func(r []model.Response, err error) {
+				d.Log("RESPUESTA ELIMINACIÓN:")
 
-					if err != nil {
-						d.Log(err)
-						return
-					}
+			})
 
-					d.Log("RESPUESTA ELIMINACIÓN:")
+		}
 
-				})
+		d.UserMessage("elemento eliminado")
 
-			}
-
-			d.UserMessage("elemento eliminado")
-
-		})
+	})
 
 	// var data = map[string]interface{}{
 	// 	"object_id": object_id,

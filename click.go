@@ -47,39 +47,6 @@ func (d Dom) Clicking(o *model.Object, id string) error {
 	return nil
 }
 
-func (d Dom) ClickingNEW(o *model.Object, id string) (err error) {
-	var moduleHTML *js.Value
-	moduleHTML, err = d.GetHtmlModule(o.ModuleName)
-	if err != nil {
-		return err
-	}
-
-	maxRetries := 10     // Número máximo de reintentos
-	retryInterval := 5   // Intervalo de reintento en milisegundos
-	maxRetryTime := 2000 // Tiempo máximo de reintento en milisegundos (1 segundo)
-
-	startTime := js.Global().Get("Date").New().Call("getTime").Int()
-
-	for retries := 0; retries < maxRetries; retries++ {
-		err = d.CallFunction(o.ViewHandlerName()+"Clicking", *moduleHTML, id)
-		if err == nil {
-			return nil // Éxito, no hay error
-		}
-
-		// Si el tiempo de reintento ha excedido el tiempo máximo, salimos del bucle
-		currentTime := js.Global().Get("Date").New().Call("getTime").Int()
-		if currentTime-startTime > maxRetryTime {
-			break
-		}
-
-		// Espera antes de intentar nuevamente
-		for start := js.Global().Get("Date").New().Call("getTime").Int(); js.Global().Get("Date").New().Call("getTime").Int()-start < retryInterval; {
-		}
-	}
-
-	return err // Devuelve el error si no se pudo completar después de los reintentos
-}
-
 func (d Dom) UserViewComponentClicked(this js.Value, source_input []js.Value) interface{} {
 
 	if len(source_input) != 2 {
@@ -89,6 +56,8 @@ func (d Dom) UserViewComponentClicked(this js.Value, source_input []js.Value) in
 	object_name := source_input[0].String()
 	object_id := source_input[1].String()
 
+	// d.Log("OBJECTO CLICK:", object_name)
+
 	object, err := d.GetObjectByName(object_name)
 	if err != nil {
 		return d.Log(err)
@@ -97,33 +66,28 @@ func (d Dom) UserViewComponentClicked(this js.Value, source_input []js.Value) in
 	if object.AfterClicked != nil {
 
 		//1- leer data del objeto
-		d.h.ReadDataAsyncInDB(
-			object.Table,
-			[]map[string]string{{
-				"WHERE": object.PrimaryKeyName(),
-				"ARGS":  object_id,
-			},
-			}, func(object_data []map[string]string, err error) {
+		d.h.ReadStringDataAsyncInDB(model.ReadDBParams{
+			FROM_TABLE: object.Table,
+			ID:         object_id,
+			// WHERE:           []string{object.PrimaryKeyName()},
+			// SEARCH_ARGUMENT: object_id,
+			// ORDER_BY:        "",
+			// SORT_DESC:       false,
+		}, func(object_data []map[string]string, err error) {
 
-				if err != nil {
-					d.Log(err)
-					return
-				}
+			if err != nil {
+				d.Log(err)
+				return
+			}
 
-				for _, data := range object_data {
-					object.UserClicked(data)
-				}
-			})
+			for _, data := range object_data {
+				object.UserClicked(data)
+			}
+		})
 
 	} else {
 		return d.UserMessage("error", "objeto:", object.Name, "no tiene controlador: UserClicked(id string) error")
-		//  return d.Log("error objeto:", object.Name, "no tiene controlador: UserClicked(id string) error")
 	}
-	// err := f.currentObject(source_input)
-	// if err != nil {
-	// 	f.dom.Log(err)
-	// 	return nil
-	// }
 
 	return nil
 
