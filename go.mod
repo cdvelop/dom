@@ -5,7 +5,7 @@ go 1.20
 require (
 	github.com/cdvelop/cutkey v0.6.0
 	github.com/cdvelop/formclient v0.0.14
-	github.com/cdvelop/model v0.0.66
+	github.com/cdvelop/model v0.0.67
 )
 
 require (
