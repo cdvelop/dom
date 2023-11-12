@@ -59,12 +59,12 @@ func (d Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 		if data[0]["backup"] != "false" {
 			d.Log("* id-", object_id, " eliminar en el servidor")
 
-			if d.h.HttpAdapter == nil {
+			if d.h.FetchAdapter == nil {
 				d.Log("*error httpAdapter nulo en objeto", o.Name)
 				return
 			}
 
-			d.h.SendJson(o, data, "delete", func(r []model.Response, err error) {
+			d.h.SendOneRequest(o, data, "delete", func(r []model.Response, err error) {
 
 				if err != nil {
 					d.Log(err)

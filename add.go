@@ -4,8 +4,8 @@ import (
 	"syscall/js"
 
 	"github.com/cdvelop/cutkey"
+	"github.com/cdvelop/fetchclient"
 	"github.com/cdvelop/formclient"
-	"github.com/cdvelop/httpclient"
 	"github.com/cdvelop/logclient"
 	"github.com/cdvelop/model"
 )
@@ -54,11 +54,11 @@ func (d *Dom) AddModules(modules ...*model.Module) {
 
 	d.cut = cutkey.Add(objects...)
 
-	http, err := httpclient.Add(d.h.Logger, d.cut)
+	http, err := fetchclient.Add(d.h.Logger, d.cut)
 	if err != nil {
 		d.Log(err)
 	}
 
 	// añadimos el controlador http
-	d.h.HttpAdapter = http
+	d.h.FetchAdapter = http
 }
