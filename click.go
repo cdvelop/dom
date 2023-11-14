@@ -6,19 +6,16 @@ import (
 	"github.com/cdvelop/model"
 )
 
-func (d Dom) ClickModule(module string) error {
+func (d Dom) ClickModule(module_name string) error {
 
-	for _, m := range d.modules {
-		if m.ModuleName == module {
-			menuButton := doc.Call("querySelector", d.h.MenuClassName()+" a[name='"+module+"']")
-			if !menuButton.IsUndefined() {
-				delayed()
-				menuButton.Call("click")
-			} else {
-				return model.Error("no se encontró modulo", module, " en el menu para la acción click")
-			}
-		}
+	menuButton := doc.Call("querySelector", d.MenuClassName()+" a[name='"+module_name+"']")
+	if !menuButton.IsUndefined() {
+		delayed()
+		menuButton.Call("click")
+	} else {
+		return model.Error("modulo", module_name, " no encontrado en el menu para la acción click")
 	}
+
 	return nil
 }
 
@@ -66,7 +63,7 @@ func (d Dom) UserViewComponentClicked(this js.Value, source_input []js.Value) in
 	if object.AfterClicked != nil {
 
 		//1- leer data del objeto
-		d.h.ReadStringDataAsyncInDB(model.ReadDBParams{
+		d.ReadStringDataAsyncInDB(model.ReadDBParams{
 			FROM_TABLE: object.Table,
 			ID:         object_id,
 			// WHERE:           []string{object.PrimaryKeyName()},

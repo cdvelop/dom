@@ -16,6 +16,17 @@ func (d Dom) resetModule(this js.Value, p []js.Value) interface{} {
 
 	d.Log(" reset module_name:", module_name)
 
+	module, err := d.GetModuleByName(module_name.String())
+	if err != nil {
+		return err
+	}
+
+	for _, o := range module.Objects {
+		if o.ViewReset != nil {
+			o.ViewReset.ResetView()
+		}
+	}
+
 	return nil
 
 }

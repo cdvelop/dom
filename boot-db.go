@@ -15,10 +15,9 @@ func (d Dom) addBootDataToLocalDB(responses ...model.Response) {
 		}
 
 		if r.Action == "create" {
-
-			err := d.h.CreateObjectsInDB(object.Table, false, r.Data)
+			err := d.CreateObjectsInDB(object.Table, false, r.Data)
 			if err != nil {
-				d.UserMessage(err.Error(), "err")
+				d.Log("error addBootDataToLocalDB", err)
 				continue
 			}
 		}

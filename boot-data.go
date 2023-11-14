@@ -13,13 +13,17 @@ func (d Dom) ActionExecutedLater() {
 
 	if json.Truthy() {
 
-		resp := d.cut.DecodeResponses([]byte(json.String()))
+		resp, err := d.DecodeResponses([]byte(json.String()))
+		if err != nil {
+			d.Log("ActionExecutedLater error", err)
+			return
+		}
 
 		// d.Log("total respuestas:", len(resp))
 
 		d.addBootDataToLocalDB(resp...)
 
-		for _, o := range d.objects {
+		for _, o := range d.GetObjects() {
 
 			if o.FrontendHandler.NotifyBootData != nil {
 				o.NotifyBootDataIsLoaded()

@@ -26,7 +26,7 @@ func (d Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 
 	d.Log("ELIMINANDO OBJETO:", o.Name, "object_id", object_id)
 
-	d.h.ReadStringDataAsyncInDB(model.ReadDBParams{
+	d.ReadStringDataAsyncInDB(model.ReadDBParams{
 		FROM_TABLE:      o.Table,
 		ID:              object_id,
 		WHERE:           []string{},
@@ -59,25 +59,24 @@ func (d Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 		if data[0]["backup"] != "false" {
 			d.Log("* id-", object_id, " eliminar en el servidor")
 
-			if d.h.FetchAdapter == nil {
+			if d.FetchAdapter == nil {
 				d.Log("*error httpAdapter nulo en objeto", o.Name)
 				return
 			}
 
-			d.h.SendOneRequest(o, data, "delete", func(r []model.Response, err error) {
+			d.SendOneRequest("delete", object_name, data, func(resp []map[string]string, err error) {
 
 				if err != nil {
-					d.Log(err)
+					d.UserMessage(err)
 					return
 				}
 
-				d.Log("RESPUESTA ELIMINACIÓN:")
+				d.Log("RESPUESTA ELIMINACIÓN:", resp)
+				d.UserMessage("elemento eliminado")
 
 			})
 
 		}
-
-		d.UserMessage("elemento eliminado")
 
 	})
 
