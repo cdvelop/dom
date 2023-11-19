@@ -8,15 +8,15 @@ import (
 
 func (d Dom) GetHtmlContainer(o *model.Object) (*js.Value, error) {
 
-	container := doc.Call("querySelector", d.QuerySelectorObject(o.ModuleName, o.Name))
+	container := doc.Call("querySelector", d.QuerySelectorObject(o.ModuleName, o.ObjectName))
 	if container.Truthy() {
 		return &container, nil
 	}
 
-	return nil, model.Error("error no se logro obtener contenedor objeto:", o.Name)
+	return nil, model.Error("error no se logro obtener contenedor objeto:", o.ObjectName)
 }
 
-func (Dom) GetHtmlModule(module_name string) (*js.Value, error) {
+func GetHtmlModule(module_name string) (*js.Value, error) {
 
 	module_html := body.Call("querySelector", "#"+module_name)
 	if !module_html.Truthy() {

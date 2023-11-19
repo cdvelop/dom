@@ -3,7 +3,6 @@ package dom
 import (
 	"syscall/js"
 
-	"github.com/cdvelop/formclient"
 	"github.com/cdvelop/model"
 )
 
@@ -17,21 +16,25 @@ func init() {
 	body = doc.Get("body")
 }
 
-func New(h *model.Handlers) *Dom {
+func New(h *model.Handlers) (*Dom, error) {
 
-	new := Dom{
+	dom := Dom{
 		ThemeAdapter:    h,
 		Logger:          h,
 		DataBaseAdapter: h,
 		DataConverter:   h,
-		FormClient:      nil,
 		ObjectsHandler:  h,
 		ModuleHandler:   h,
 		FetchAdapter:    h,
 	}
 
-	h.DomAdapter = new
-	new.FormClient = formclient.Add(&new, h.DataBaseAdapter)
+	h.DomAdapter = dom
+	h.MessageAdapter = dom
 
-	return &new
+	err := h.CheckInterfaces("dom config", dom)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dom, nil
 }

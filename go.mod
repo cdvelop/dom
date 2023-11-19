@@ -2,10 +2,9 @@ module github.com/cdvelop/dom
 
 go 1.20
 
-require (
-	github.com/cdvelop/formclient v0.0.14
-	github.com/cdvelop/model v0.0.68
-)
+require github.com/cdvelop/model v0.0.69
+
+require github.com/cdvelop/strings v0.0.7 // indirect
 
 replace github.com/cdvelop/model => ../model
 

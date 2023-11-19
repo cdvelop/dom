@@ -27,13 +27,13 @@ func delayed() {
 
 func (d Dom) Clicking(o *model.Object, id string) error {
 
-	module_html, err := d.GetHtmlModule(o.ModuleName)
+	module_html, err := GetHtmlModule(o.ModuleName)
 	if err != nil {
 		return err
 	}
 
 	if o.ViewHandler == nil {
-		return model.Error("error objeto", o.Name, "no tiene controlador ViewHandler para realizar click")
+		return model.Error("error objeto", o.ObjectName, "no tiene controlador ViewHandler para realizar click")
 	}
 
 	err = d.CallFunction(o.ViewHandlerName()+"Clicking", *module_html, id)
@@ -83,7 +83,7 @@ func (d Dom) UserViewComponentClicked(this js.Value, source_input []js.Value) in
 		})
 
 	} else {
-		return d.UserMessage("error", "objeto:", object.Name, "no tiene controlador: UserClicked(id string) error")
+		return d.UserMessage("error", "objeto:", object.ObjectName, "no tiene controlador: UserClicked(id string) error")
 	}
 
 	return nil

@@ -3,7 +3,6 @@ package dom
 import (
 	"syscall/js"
 
-	"github.com/cdvelop/formclient"
 	"github.com/cdvelop/model"
 )
 
@@ -15,8 +14,6 @@ type Dom struct {
 	model.ObjectsHandler
 	model.ModuleHandler
 	model.FetchAdapter
-
-	*formclient.FormClient
 }
 
 type HtmlElement struct {

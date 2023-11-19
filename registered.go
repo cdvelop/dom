@@ -4,9 +4,7 @@ import (
 	"syscall/js"
 )
 
-func (d *Dom) registerGlobalFunctions() {
-
-	js.Global().Set("userFormTyping", js.FuncOf(d.FormClient.UserFormTyping))
+func (d Dom) registerGlobalFunctions() {
 
 	js.Global().Set("userViewComponentClicked", js.FuncOf(d.UserViewComponentClicked))
 

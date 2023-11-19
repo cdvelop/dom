@@ -42,7 +42,7 @@ func (d Dom) addDataToLocalDB(responses ...model.Response) {
 				// html_container.Call("insertAdjacentHTML", "beforeend", tags)
 
 			} else {
-				d.Log("objeto", object.Name, "no contiene AfterCreate")
+				d.Log("objeto", object.ObjectName, "no contiene AfterCreate")
 			}
 
 		case "read":
