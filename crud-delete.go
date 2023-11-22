@@ -20,7 +20,7 @@ func (d Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 		return d.Log(err)
 	}
 
-	if o.AfterDelete == nil {
+	if o.FrontHandler.AfterDelete == nil {
 		return d.Log("error objeto", o.ObjectName, "no cuenta con controlador para eliminar")
 	}
 
@@ -93,11 +93,11 @@ func (d Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 	// }
 	// // d.Log("DESPUÉS:", data)
 
-	// if o.ViewHandler != nil {
+	// if o.ViewAdapter != nil {
 
 	// 	fiel_id := o.PrimaryKeyName()
 
-	// 	html := o.BuildItemView(map[string]string{
+	// 	html := o.BuildItemsView(map[string]string{
 	// 		fiel_id: data[fiel_id].(string),
 	// 		"url":   data["url"].(string),
 	// 	})

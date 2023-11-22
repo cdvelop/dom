@@ -19,22 +19,12 @@ func init() {
 func New(h *model.Handlers) (*Dom, error) {
 
 	dom := Dom{
-		ThemeAdapter:    h,
-		Logger:          h,
-		DataBaseAdapter: h,
-		DataConverter:   h,
-		ObjectsHandler:  h,
-		ModuleHandler:   h,
-		FetchAdapter:    h,
+		Handlers: h,
 	}
 
 	h.DomAdapter = dom
 	h.MessageAdapter = dom
-
-	err := h.CheckInterfaces("dom config", dom)
-	if err != nil {
-		return nil, err
-	}
+	h.HtmlAdapter = dom
 
 	return &dom, nil
 }

@@ -10,6 +10,7 @@ func (d Dom) BuildUI() {
 
 	d.registerGlobalFunctions()
 
+	d.Log("UI CONSTRUIDA")
 }
 
 func (d Dom) buildMenu() {

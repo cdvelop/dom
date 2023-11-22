@@ -17,7 +17,7 @@ func (d Dom) addDataToLocalDB(responses ...model.Response) {
 		switch r.Action {
 		case "create":
 
-			if object.FrontendHandler.AfterCreate != nil {
+			if object.FrontHandler.AfterCreate != nil {
 
 				// module_html, err := getHtmlModule(object.ModuleName)
 				// if err != nil {
@@ -25,7 +25,7 @@ func (d Dom) addDataToLocalDB(responses ...model.Response) {
 				// 	continue
 				// }
 
-				err = object.FrontendHandler.AfterCreate.SetObjectInDomAfterCreate(r.Data...)
+				err = object.FrontHandler.AfterCreate.SetObjectInDomAfterCreate(r.Data...)
 				if err != nil {
 					d.UserMessage(err.Error(), "err")
 					continue

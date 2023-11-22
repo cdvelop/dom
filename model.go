@@ -7,13 +7,7 @@ import (
 )
 
 type Dom struct {
-	model.ThemeAdapter
-	model.Logger
-	model.DataBaseAdapter
-	model.DataConverter
-	model.ObjectsHandler
-	model.ModuleHandler
-	model.FetchAdapter
+	*model.Handlers
 }
 
 type HtmlElement struct {

@@ -32,11 +32,11 @@ func (d Dom) saveBlobFile(this js.Value, p []js.Value) interface{} {
 	}
 	// d.Log("DESPUÉS:", data)
 
-	if o.ViewHandler != nil {
+	if o.FrontHandler.ViewAdapter != nil {
 
 		fiel_id := o.PrimaryKeyName()
 
-		html := o.BuildItemView(map[string]string{
+		html := o.FrontHandler.BuildItemsView(map[string]string{
 			fiel_id: data[fiel_id].(string),
 			"url":   data["url"].(string),
 		})

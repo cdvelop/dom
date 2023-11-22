@@ -6,42 +6,24 @@ import (
 	"github.com/cdvelop/model"
 )
 
-func (d Dom) ClickModule(module_name string) error {
-
-	menuButton := doc.Call("querySelector", d.MenuClassName()+" a[name='"+module_name+"']")
-	if !menuButton.IsUndefined() {
-		delayed()
-		menuButton.Call("click")
-	} else {
-		return model.Error("modulo", module_name, " no encontrado en el menu para la acción click")
-	}
-
-	return nil
-}
-
-func delayed() {
-	js.Global().Call("setTimeout", js.FuncOf(func(this js.Value, p []js.Value) interface{} {
+// querySelector ej: "a[name='xxx']"
+func (d Dom) ElementClicking(querySelector string) error {
+	element := doc.Call("querySelector", querySelector)
+	// d.Log("ELEMENTO CLICK", element)
+	if element.Truthy() {
+		element.Call("click")
 		return nil
-	}), 50)
+	}
+
+	return model.Error("ElementClicking error no se encontró elemento con la consulta", querySelector)
 }
 
-func (d Dom) Clicking(o *model.Object, id string) error {
-
-	module_html, err := GetHtmlModule(o.ModuleName)
-	if err != nil {
-		return err
-	}
-
-	if o.ViewHandler == nil {
-		return model.Error("error objeto", o.ObjectName, "no tiene controlador ViewHandler para realizar click")
-	}
-
-	err = d.CallFunction(o.ViewHandlerName()+"Clicking", *module_html, id)
-	if err != nil {
-		return err
-	}
-
-	return nil
+// WaitFor espera el número especificado de milisegundos y luego ejecuta la función de retorno de llamada.
+func (d Dom) WaitFor(milliseconds int, callback func()) {
+	js.Global().Call("setTimeout", js.FuncOf(func(this js.Value, p []js.Value) interface{} {
+		callback() // Llamar a la función de retorno de llamada después de esperar
+		return nil
+	}), milliseconds)
 }
 
 func (d Dom) UserViewComponentClicked(this js.Value, source_input []js.Value) interface{} {
@@ -60,7 +42,7 @@ func (d Dom) UserViewComponentClicked(this js.Value, source_input []js.Value) in
 		return d.Log(err)
 	}
 
-	if object.AfterClicked != nil {
+	if object.FrontHandler.AfterClicked != nil {
 
 		//1- leer data del objeto
 		d.ReadStringDataAsyncInDB(model.ReadDBParams{
@@ -78,7 +60,7 @@ func (d Dom) UserViewComponentClicked(this js.Value, source_input []js.Value) in
 			}
 
 			for _, data := range object_data {
-				object.UserClicked(data)
+				object.FrontHandler.UserClicked(data)
 			}
 		})
 

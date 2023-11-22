@@ -1,6 +1,8 @@
 package dom
 
-import "syscall/js"
+import (
+	"syscall/js"
+)
 
 func (d Dom) resetModule(this js.Value, p []js.Value) interface{} {
 
@@ -14,7 +16,7 @@ func (d Dom) resetModule(this js.Value, p []js.Value) interface{} {
 		return nil
 	}
 
-	d.Log(" reset module_name:", module_name)
+	d.Log("resetModule:", module_name)
 
 	module, err := d.GetModuleByName(module_name.String())
 	if err != nil {
@@ -22,8 +24,10 @@ func (d Dom) resetModule(this js.Value, p []js.Value) interface{} {
 	}
 
 	for _, o := range module.Objects {
-		if o.ViewReset != nil {
-			o.ViewReset.ResetView()
+		d.Log("ObjectName:", o.ObjectName)
+
+		if o.FrontHandler.ResetViewObjectAdapter != nil {
+			o.FrontHandler.ResetObjectView()
 		}
 	}
 

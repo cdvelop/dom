@@ -1,6 +1,6 @@
 package dom
 
-func (d Dom) ActionExecutedLater() {
+func (d Dom) RunBootActions() {
 
 	// d.Log("CORRIENDO ACTIONS DATA DE ARRANQUE")
 
@@ -15,7 +15,7 @@ func (d Dom) ActionExecutedLater() {
 
 		resp, err := d.DecodeResponses([]byte(json.String()))
 		if err != nil {
-			d.Log("ActionExecutedLater error", err)
+			d.Log("RunBootActions error", err)
 			return
 		}
 
@@ -25,13 +25,40 @@ func (d Dom) ActionExecutedLater() {
 
 		for _, o := range d.GetObjects() {
 
-			if o.FrontendHandler.NotifyBootData != nil {
-				o.NotifyBootDataIsLoaded()
+			if o.FrontHandler.NotifyBootData != nil {
+				o.FrontHandler.NotifyBootDataIsLoaded()
 			}
 		}
 
 		// Establece el contenido del elemento meta a una cadena vacía
 		meta.Set("content", "")
+
+	}
+
+}
+
+func (d Dom) RunTests() {
+	// d.Log("EJECUTANDO TEST...")
+	meta := doc.Call("querySelector", "meta[name='JsonBootTests']")
+	if !meta.Truthy() {
+		return
+	}
+
+	json := meta.Get("content")
+
+	if json.Truthy() {
+
+		resp, err := d.DecodeResponses([]byte(json.String()))
+		if err != nil {
+			d.Log("RunTests error", err)
+			return
+		}
+
+		e := d.Test.RunModuleTests(resp...)
+		if e != "" {
+			d.Log("RunModuleTests", e)
+			return
+		}
 
 	}
 

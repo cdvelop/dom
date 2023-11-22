@@ -16,13 +16,13 @@ func (d Dom) GetHtmlContainer(o *model.Object) (*js.Value, error) {
 	return nil, model.Error("error no se logro obtener contenedor objeto:", o.ObjectName)
 }
 
-func GetHtmlModule(module_name string) (*js.Value, error) {
+func (d Dom) GetHtmlModule(module_name string) (any, error) {
 
-	module_html := body.Call("querySelector", "#"+module_name)
+	module_html := body.Call("querySelector", "div#"+module_name)
 	if !module_html.Truthy() {
 		return nil, model.Error("error modulo html", module_name, "no encontrado")
 	}
 
-	return &module_html, nil
+	return module_html, nil
 
 }
