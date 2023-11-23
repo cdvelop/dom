@@ -9,14 +9,14 @@ func (d Dom) addBootDataToLocalDB(responses ...model.Response) {
 		// d.Log("domUpdate .... buscando objeto", r.Object)
 
 		object, err := d.GetObjectByName(r.Object)
-		if err != nil {
+		if err != "" {
 			d.Log(err)
 			continue
 		}
 
 		if r.Action == "create" {
 			err := d.CreateObjectsInDB(object.Table, false, r.Data)
-			if err != nil {
+			if err != "" {
 				d.Log("error addBootDataToLocalDB", err)
 				continue
 			}

@@ -7,7 +7,7 @@ import (
 func (d Dom) InnerHTML(html_content string, o *model.Object) {
 
 	container, err := d.GetHtmlContainer(o)
-	if err != nil {
+	if err != "" {
 		d.Log(err)
 		return
 	}
@@ -28,7 +28,7 @@ func (d Dom) InsertBeforeEnd(html_content string, o *model.Object) {
 func (d Dom) insertInDom(where, html_content string, o *model.Object) {
 
 	container, err := d.GetHtmlContainer(o)
-	if err != nil {
+	if err != "" {
 		d.Log(err)
 		return
 	}

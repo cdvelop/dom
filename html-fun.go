@@ -6,23 +6,23 @@ import (
 	"github.com/cdvelop/model"
 )
 
-func (d Dom) GetHtmlContainer(o *model.Object) (*js.Value, error) {
+func (d Dom) GetHtmlContainer(o *model.Object) (ctn *js.Value, err string) {
 
 	container := doc.Call("querySelector", d.QuerySelectorObject(o.ModuleName, o.ObjectName))
 	if container.Truthy() {
-		return &container, nil
+		return &container, ""
 	}
 
-	return nil, model.Error("error no se logro obtener contenedor objeto:", o.ObjectName)
+	return nil, "GetHtmlContainer error no se logro obtener contenedor objeto: " + o.ObjectName
 }
 
-func (d Dom) GetHtmlModule(module_name string) (any, error) {
+func (d Dom) GetHtmlModule(module_name string) (out any, err string) {
 
 	module_html := body.Call("querySelector", "div#"+module_name)
 	if !module_html.Truthy() {
-		return nil, model.Error("error modulo html", module_name, "no encontrado")
+		return nil, "GetHtmlModule error. modulo html " + module_name + " no encontrado"
 	}
 
-	return module_html, nil
+	return module_html, ""
 
 }

@@ -4,8 +4,8 @@ import (
 	"syscall/js"
 )
 
-func (d Dom) resetModule(this js.Value, p []js.Value) interface{} {
-
+func (d Dom) resetModule(v js.Value, p []js.Value) interface{} {
+	const this = "resetModule error "
 	if len(p) != 1 {
 		return d.Log("error resetModule required 1 args")
 	}
@@ -19,8 +19,8 @@ func (d Dom) resetModule(this js.Value, p []js.Value) interface{} {
 	d.Log("resetModule:", module_name)
 
 	module, err := d.GetModuleByName(module_name.String())
-	if err != nil {
-		return err
+	if err != "" {
+		return this + err
 	}
 
 	for _, o := range module.Objects {

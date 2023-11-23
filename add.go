@@ -16,7 +16,7 @@ func init() {
 	body = doc.Get("body")
 }
 
-func New(h *model.Handlers) (*Dom, error) {
+func New(h *model.Handlers) *Dom {
 
 	dom := Dom{
 		Handlers: h,
@@ -26,5 +26,5 @@ func New(h *model.Handlers) (*Dom, error) {
 	h.MessageAdapter = dom
 	h.HtmlAdapter = dom
 
-	return &dom, nil
+	return &dom
 }

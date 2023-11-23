@@ -15,7 +15,7 @@ func (d Dom) saveBlobFile(this js.Value, p []js.Value) interface{} {
 	blob := p[2]                 // arg 3
 
 	o, err := d.GetObjectByName(object_name)
-	if err != nil {
+	if err != "" {
 		return d.Log(err)
 	}
 
@@ -27,7 +27,7 @@ func (d Dom) saveBlobFile(this js.Value, p []js.Value) interface{} {
 	// d.Log("DATA ANTES DE CREAR:", data)
 
 	err = d.CreateObjectsInDB(o.Table, true, data)
-	if err != nil {
+	if err != "" {
 		return d.Log(err)
 	}
 	// d.Log("DESPUÉS:", data)

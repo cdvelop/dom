@@ -7,15 +7,15 @@ import (
 )
 
 // querySelector ej: "a[name='xxx']"
-func (d Dom) ElementClicking(querySelector string) error {
+func (d Dom) ElementClicking(querySelector string) (err string) {
 	element := doc.Call("querySelector", querySelector)
 	// d.Log("ELEMENTO CLICK", element)
 	if element.Truthy() {
 		element.Call("click")
-		return nil
+		return ""
 	}
 
-	return model.Error("ElementClicking error no se encontró elemento con la consulta", querySelector)
+	return "ElementClicking error no se encontró elemento con la consulta " + querySelector
 }
 
 // WaitFor espera el número especificado de milisegundos y luego ejecuta la función de retorno de llamada.
@@ -38,7 +38,7 @@ func (d Dom) UserViewComponentClicked(this js.Value, source_input []js.Value) in
 	// d.Log("OBJECTO CLICK:", object_name)
 
 	object, err := d.GetObjectByName(object_name)
-	if err != nil {
+	if err != "" {
 		return d.Log(err)
 	}
 
@@ -52,9 +52,9 @@ func (d Dom) UserViewComponentClicked(this js.Value, source_input []js.Value) in
 			// SEARCH_ARGUMENT: object_id,
 			// ORDER_BY:        "",
 			// SORT_DESC:       false,
-		}, func(object_data []map[string]string, err error) {
+		}, func(object_data []map[string]string, err string) {
 
-			if err != nil {
+			if err != "" {
 				d.Log(err)
 				return
 			}

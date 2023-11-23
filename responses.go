@@ -9,7 +9,7 @@ func (d Dom) addDataToLocalDB(responses ...model.Response) {
 		// d.Log("domUpdate .... buscando objeto", r.Object)
 
 		object, err := d.GetObjectByName(r.Object)
-		if err != nil {
+		if err != "" {
 			d.Log(err)
 			continue
 		}
@@ -26,8 +26,8 @@ func (d Dom) addDataToLocalDB(responses ...model.Response) {
 				// }
 
 				err = object.FrontHandler.AfterCreate.SetObjectInDomAfterCreate(r.Data...)
-				if err != nil {
-					d.UserMessage(err.Error(), "err")
+				if err != "" {
+					d.UserMessage("err", err)
 					continue
 				}
 

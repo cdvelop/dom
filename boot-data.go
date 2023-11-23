@@ -14,7 +14,7 @@ func (d Dom) RunBootActions() {
 	if json.Truthy() {
 
 		resp, err := d.DecodeResponses([]byte(json.String()))
-		if err != nil {
+		if err != "" {
 			d.Log("RunBootActions error", err)
 			return
 		}
@@ -32,33 +32,6 @@ func (d Dom) RunBootActions() {
 
 		// Establece el contenido del elemento meta a una cadena vacía
 		meta.Set("content", "")
-
-	}
-
-}
-
-func (d Dom) RunTests() {
-	// d.Log("EJECUTANDO TEST...")
-	meta := doc.Call("querySelector", "meta[name='JsonBootTests']")
-	if !meta.Truthy() {
-		return
-	}
-
-	json := meta.Get("content")
-
-	if json.Truthy() {
-
-		resp, err := d.DecodeResponses([]byte(json.String()))
-		if err != nil {
-			d.Log("RunTests error", err)
-			return
-		}
-
-		e := d.Test.RunModuleTests(resp...)
-		if e != "" {
-			d.Log("RunModuleTests", e)
-			return
-		}
 
 	}
 

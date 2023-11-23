@@ -16,7 +16,7 @@ func (d Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 	object_id := p[1].String()   // arg 2
 
 	o, err := d.GetObjectByName(object_name)
-	if err != nil {
+	if err != "" {
 		return d.Log(err)
 	}
 
@@ -33,9 +33,9 @@ func (d Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 		SEARCH_ARGUMENT: "",
 		ORDER_BY:        "",
 		SORT_DESC:       false,
-	}, func(data []map[string]string, err error) {
+	}, func(data []map[string]string, err string) {
 
-		if err != nil {
+		if err != "" {
 			d.Log(err)
 			return
 		}
@@ -64,9 +64,9 @@ func (d Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 				return
 			}
 
-			d.SendOneRequest("POST", "delete", object_name, data, func(resp []map[string]string, err error) {
+			d.SendOneRequest("POST", "delete", object_name, data, func(resp []map[string]string, err string) {
 
-				if err != nil {
+				if err != "" {
 					d.UserMessage(err)
 					return
 				}
