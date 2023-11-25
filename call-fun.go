@@ -10,12 +10,12 @@ func (d Dom) CallFunction(function_name string, args ...any) (err string) {
 	// result := global.Call(function_name, args...)
 	// d.Log("RESULTADO BÚSQUEDA FUNCION:", fun_result)
 	if !fun_result.Truthy() {
-		return "error la función js:" + function_name + "no existe"
+		return "la función js:" + function_name + "no existe"
 	}
 
 	result := js.Global().Call(function_name, args...)
 	if result.Truthy() { //si retorna algo es por que ocurrió un error
-		return "CallFunction error: " + result.String()
+		return "CallFunction " + result.String()
 	}
 
 	return ""

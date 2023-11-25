@@ -6,26 +6,6 @@ import (
 	"github.com/cdvelop/model"
 )
 
-// querySelector ej: "a[name='xxx']"
-func (d Dom) ElementClicking(querySelector string) (err string) {
-	element := doc.Call("querySelector", querySelector)
-	// d.Log("ELEMENTO CLICK", element)
-	if element.Truthy() {
-		element.Call("click")
-		return ""
-	}
-
-	return "ElementClicking error no se encontró elemento con la consulta " + querySelector
-}
-
-// WaitFor espera el número especificado de milisegundos y luego ejecuta la función de retorno de llamada.
-func (d Dom) WaitFor(milliseconds int, callback func()) {
-	js.Global().Call("setTimeout", js.FuncOf(func(this js.Value, p []js.Value) interface{} {
-		callback() // Llamar a la función de retorno de llamada después de esperar
-		return nil
-	}), milliseconds)
-}
-
 func (d Dom) UserViewComponentClicked(this js.Value, source_input []js.Value) interface{} {
 
 	if len(source_input) != 2 {
