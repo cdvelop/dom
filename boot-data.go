@@ -11,10 +11,12 @@ func (d Dom) RunBootActions() {
 
 	json := meta.Get("content")
 
-	d.Log("CONTENDIDO JSON BOOT ok 1:", json.String())
-	if json.Truthy() {
+	content := json.String()
 
-		resp, err := d.DecodeResponses([]byte(json.String()))
+	d.Log("CONTENDIDO JSON BOOT ok 2:", content)
+	if json.Truthy() && content != "none" {
+
+		resp, err := d.DecodeResponses([]byte(content))
 		if err != "" {
 			d.Log("RunBootActions ", err)
 			return
