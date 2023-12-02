@@ -16,10 +16,12 @@ func init() {
 	body = doc.Get("body")
 }
 
-func New(h *model.Handlers) *Dom {
+// home_module ej:session
+func New(h *model.Handlers, home_module string) *Dom {
 
 	dom := Dom{
-		Handlers: h,
+		Handlers:    h,
+		home_module: home_module,
 	}
 
 	h.DomAdapter = dom

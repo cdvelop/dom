@@ -1,10 +1,12 @@
 package dom
 
-import "syscall/js"
+import (
+	"syscall/js"
+)
 
 // querySelector ej: "a[name='xxx']"
 func (d Dom) ElementClicking(querySelector string) (err string) {
-	const this = "ElementClicking error"
+	const this = "ElementClicking error "
 	element, err := query(querySelector)
 	if err != "" {
 		return this + err
@@ -18,7 +20,7 @@ func (d Dom) ElementClicking(querySelector string) (err string) {
 	return ""
 }
 
-//ej: querySelector "meta[name='JsonBootTests']"
+// ej: querySelector "meta[name='JsonBootTests']"
 // get_content: "content"
 func (d Dom) SelectContent(querySelector, get_content string) (content, err string) {
 	const this = "SelectContent error "

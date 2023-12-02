@@ -8,6 +8,7 @@ import (
 
 type Dom struct {
 	*model.Handlers
+	home_module string
 }
 
 type HtmlElement struct {
