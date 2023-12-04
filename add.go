@@ -27,6 +27,7 @@ func New(h *model.Handlers, home_module string) *Dom {
 	h.DomAdapter = dom
 	h.MessageAdapter = dom
 	h.HtmlAdapter = dom
+	h.FrontendBootDataUser = dom
 
 	return &dom
 }

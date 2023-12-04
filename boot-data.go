@@ -16,26 +16,39 @@ func (d Dom) RunBootActions() {
 	d.Log("CONTENDIDO JSON BOOT ok 2:", content)
 	if json.Truthy() && content != "none" {
 
-		resp, err := d.DecodeResponses([]byte(content))
-		if err != "" {
-			d.Log("RunBootActions ", err)
-			return
-		}
-
-		// d.Log("total respuestas:", len(resp))
-
-		d.addBootDataToLocalDB(resp...)
-
-		for _, o := range d.GetObjects() {
-
-			if o.FrontHandler.NotifyBootData != nil {
-				o.FrontHandler.NotifyBootDataIsLoaded()
-			}
-		}
+		err := d.FrontendLoadBootData(content)
+		d.UserMessage(err)
+		d.Log(err)
 
 		// Establece el contenido del elemento meta a una cadena vacía
 		meta.Set("content", "")
 
 	}
 
+}
+
+func (d Dom) FrontendLoadBootData(data string) (err string) {
+	const this = "FrontendLoadBootData error "
+
+	if data == "" {
+		return this + "sin data para cargar al sistema"
+	}
+
+	resp, err := d.DecodeResponses([]byte(data))
+	if err != "" {
+		return this + err
+	}
+
+	// d.Log("total respuestas:", len(resp))
+
+	d.addBootDataToLocalDB(resp...)
+
+	for _, o := range d.GetObjects() {
+
+		if o.FrontHandler.NotifyBootData != nil {
+			o.FrontHandler.NotifyBootDataIsLoaded()
+		}
+	}
+
+	return
 }
