@@ -25,23 +25,24 @@ func (d Dom) UserViewComponentClicked(this js.Value, source_input []js.Value) in
 	if object.FrontHandler.AfterClicked != nil {
 
 		//1- leer data del objeto
-		d.ReadStringDataAsyncInDB(model.ReadDBParams{
+		d.ReadAsyncDataDB(model.ReadParams{
 			FROM_TABLE: object.Table,
 			ID:         object_id,
 			// WHERE:           []string{object.PrimaryKeyName()},
 			// SEARCH_ARGUMENT: object_id,
 			// ORDER_BY:        "",
 			// SORT_DESC:       false,
-		}, func(object_data []map[string]string, err string) {
+		}, func(r model.ReadResult) {
 
 			if err != "" {
 				d.Log(err)
 				return
 			}
 
-			for _, data := range object_data {
+			for _, data := range r.DataString {
 				object.FrontHandler.UserClicked(data)
 			}
+
 		})
 
 	} else {
