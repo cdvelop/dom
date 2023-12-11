@@ -1,37 +1,34 @@
 package dom
 
-import (
-	"github.com/cdvelop/model"
-)
+func (d Dom) InnerHTML(querySelector, html_content string) (err string) {
 
-func (d Dom) InnerHTML(html_content string, o *model.Object) {
-
-	container, err := d.GetHtmlContainer(o)
+	container, err := query(querySelector)
 	if err != "" {
-		d.Log(err)
-		return
+		return "InnerHTML error " + err
 	}
 
 	container.Set("innerHTML", html_content)
 
+	return
 }
 
-func (d Dom) InsertAfterBegin(html_content string, o *model.Object) {
-	d.insertInDom("afterbegin", html_content, o)
+func (d Dom) InsertAfterBegin(querySelector, html_content string) (err string) {
+	return d.insertInDom(querySelector, "afterbegin", html_content)
 }
 
-func (d Dom) InsertBeforeEnd(html_content string, o *model.Object) {
-	d.insertInDom("beforeend", html_content, o)
+func (d Dom) InsertBeforeEnd(querySelector, html_content string) (err string) {
+	return d.insertInDom(querySelector, "beforeend", html_content)
 }
 
 // where ej: afterbegin,beforeend
-func (d Dom) insertInDom(where, html_content string, o *model.Object) {
+func (d Dom) insertInDom(querySelector, where, html_content string) (err string) {
 
-	container, err := d.GetHtmlContainer(o)
+	container, err := query(querySelector)
 	if err != "" {
-		d.Log(err)
-		return
+		return "insertInDom error " + err
 	}
 
 	container.Call("insertAdjacentHTML", where, html_content)
+
+	return
 }

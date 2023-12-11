@@ -41,7 +41,10 @@ func (d Dom) saveBlobFile(this js.Value, p []js.Value) interface{} {
 			"url":   data["url"].(string),
 		})
 
-		d.InsertAfterBegin(html, o)
+		err = d.InsertAfterBegin(d.QuerySelectorObject(o.ModuleName, o.ObjectName), html)
+		if err != "" {
+			d.Log(err)
+		}
 
 	}
 

@@ -13,7 +13,7 @@ func (d Dom) RunBootActions() {
 
 	content := json.String()
 
-	d.Log("CONTENDIDO JSON BOOT ok 2:", content)
+	// d.Log("CONTENDIDO JSON BOOT ok 2:", content)
 	if json.Truthy() && content != "none" {
 
 		err := d.FrontendLoadBootData(content)

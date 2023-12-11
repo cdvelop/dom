@@ -45,3 +45,14 @@ func query(selector string) (element js.Value, err string) {
 	}
 	return element, ""
 }
+
+func (d Dom) GetHtmlModule(module_name string) (out any, err string) {
+
+	module_html := body.Call("querySelector", "div#"+module_name)
+	if !module_html.Truthy() {
+		return nil, "GetHtmlModule error. modulo html " + module_name + " no encontrado"
+	}
+
+	return module_html, ""
+
+}
