@@ -16,20 +16,14 @@ func (d Dom) resetModule(v js.Value, p []js.Value) interface{} {
 		return nil
 	}
 
-	d.Log("resetModule:", module_name)
+	d.Log("resetModule:", module_name.String())
 
 	module, err := d.GetModuleByName(module_name.String())
 	if err != "" {
 		return this + err
 	}
 
-	for _, o := range module.Objects {
-		d.Log("ObjectName:", o.ObjectName)
-
-		if o.FrontHandler.ResetViewObjectAdapter != nil {
-			o.FrontHandler.ResetObjectView()
-		}
-	}
+	module.ResetFrontendStateObjects()
 
 	return nil
 

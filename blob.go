@@ -32,7 +32,7 @@ func (d Dom) saveBlobFile(this js.Value, p []js.Value) interface{} {
 	}
 	// d.Log("DESPUÉS:", data)
 
-	if o.FrontHandler.ViewAdapter != nil {
+	if o.FrontHandler.ObjectViewHandler != nil {
 
 		fiel_id := o.PrimaryKeyName()
 

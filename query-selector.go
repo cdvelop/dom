@@ -22,19 +22,26 @@ func (d Dom) ElementClicking(querySelector string) (err string) {
 
 // ej: querySelector "meta[name='JsonBootTests']"
 // get_content: "content"
-func (d Dom) SelectContent(querySelector, get_content string) (content, err string) {
-	const this = "SelectContent error "
+// set_after true = element.Set("content", "")
+func (d Dom) SelectContent(querySelector, get_content string, set_after bool) (content, err string) {
+	const t = "SelectContent error "
 	element, err := query(querySelector)
 	if err != "" {
-		return "", this + err
+		return "", t + err
 	}
 
 	jsValue := element.Get(get_content)
 	if !jsValue.Truthy() { //si retorna algo es por que ocurrió un error
-		return "", this + "contenido: " + get_content + ", no encontrado con get"
+		return "", t + "contenido: " + get_content + ", no encontrado con get"
 	}
 
-	return jsValue.String(), ""
+	content = jsValue.String()
+
+	if set_after {
+		jsValue.Set(get_content, "")
+	}
+
+	return
 }
 
 func query(selector string) (element js.Value, err string) {

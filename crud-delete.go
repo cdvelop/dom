@@ -93,7 +93,7 @@ func (d Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 	// }
 	// // d.Log("DESPUÉS:", data)
 
-	// if o.ViewAdapter != nil {
+	// if o.ObjectViewHandler != nil {
 
 	// 	fiel_id := o.PrimaryKeyName()
 

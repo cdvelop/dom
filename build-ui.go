@@ -7,7 +7,7 @@ import (
 )
 
 func (d Dom) BuildFrontendUI() (err string) {
-	d.Log("CONSTRUYENDO UI...OK")
+	// d.Log("CONSTRUYENDO UI...OK")
 
 	d.FrontendCheckUser(func(u *model.User, err string) {
 		var area string
@@ -15,27 +15,19 @@ func (d Dom) BuildFrontendUI() (err string) {
 		if u != nil && err == "" {
 			area = u.Area
 
-			// AGREGAMOS DATOS DEL USUARIO A LA VISTA
-			err = d.InnerHTML(d.QuerySelectorUserName(), u.Name)
-			if err != "" {
-				d.Log(err)
-			}
-			err = d.InnerHTML(d.QuerySelectorUserArea(), u.AreaName)
-			if err != "" {
-				d.Log(err)
-			}
+			d.Log(d.InnerHTML(d.QuerySelectorUserName(), u.Name))
+
+			d.Log(d.InnerHTML(d.QuerySelectorUserArea(), u.AreaName))
+
 		}
 
-		err = d.setUserUI(area)
-		if err != "" {
-			d.Log(err)
-		}
+		d.Log(d.setUserUI(area))
 
 	})
 
 	d.registerGlobalFunctions()
 
-	d.Log("UI CONSTRUIDA")
+	// d.Log("UI CONSTRUIDA")
 	return
 }
 
@@ -89,18 +81,12 @@ func (d Dom) setUserUI(area string) (err string) {
 	}
 
 	if area == "" {
-		err = d.ElementClicking(d.QuerySelectorMenuModule(d.home_module))
-		if err != "" {
-			d.Log("en el modulo home " + err)
-		}
-	} else {
-
-		// click en el modulo principal
-		err = d.ElementClicking(d.QuerySelectorMenuModule(main_module))
-		if err != "" {
-			d.Log("en el modulo principal " + err)
-		}
+		main_module = d.home_module
 	}
+	d.Log("ElementClicking main_module:", main_module)
 
+	d.Log(d.ElementClicking(d.QuerySelectorMenuModule(main_module)))
+
+	d.Log("main_module:", main_module)
 	return
 }
