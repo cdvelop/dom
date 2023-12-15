@@ -26,8 +26,8 @@ func (d Dom) UserViewComponentClicked(this js.Value, source_input []js.Value) in
 
 		//1- leer data del objeto
 		d.ReadAsyncDataDB(model.ReadParams{
-			FROM_TABLES: object.Table,
-			ID:          object_id,
+			FROM_TABLE: object.Table,
+			ID:         object_id,
 			// WHERE:           []string{object.PrimaryKeyName()},
 			// SEARCH_ARGUMENT: object_id,
 			// ORDER_BY:        "",
