@@ -27,24 +27,24 @@ func (d Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 	d.Log("ELIMINANDO OBJETO:", o.ObjectName, "object_id", object_id)
 
 	d.ReadAsyncDataDB(model.ReadParams{
-		FROM_TABLE:      o.Table,
+		FROM_TABLES:     o.Table,
 		ID:              object_id,
 		WHERE:           []string{},
 		SEARCH_ARGUMENT: "",
 		ORDER_BY:        "",
 		SORT_DESC:       false,
-	}, func(r model.ReadResult) {
+	}, func(r model.ReadResults) {
 
 		if r.Error != "" {
 			d.Log(r.Error)
 			return
 		}
 
-		for _, data := range r.DataString {
+		for _, data := range r.ResultsString {
 			d.Log("DATA:", data)
 		}
 
-		if len(r.DataString) != 1 {
+		if len(r.ResultsString) != 1 {
 			d.UserMessage("error", "se esperaba solo un objeto a eliminar")
 			return
 		}
@@ -56,7 +56,7 @@ func (d Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 		// 	return
 		// }
 		// Verificar si el objeto existe en el servidor.
-		if r.DataString[0]["backup"] != "false" {
+		if r.ResultsString[0]["backup"] != "false" {
 			d.Log("* id-", object_id, " eliminar en el servidor")
 
 			if d.FetchAdapter == nil {
@@ -64,7 +64,7 @@ func (d Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 				return
 			}
 
-			d.SendOneRequest("POST", "delete", object_name, r.DataString, func(resp []map[string]string, err string) {
+			d.SendOneRequest("POST", "delete", object_name, r.ResultsString, func(resp []map[string]string, err string) {
 
 				if err != "" {
 					d.UserMessage(err)

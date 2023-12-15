@@ -2,6 +2,6 @@ module github.com/cdvelop/dom
 
 go 1.20
 
-require github.com/cdvelop/model v0.0.96
+require github.com/cdvelop/model v0.0.97
 
 replace github.com/cdvelop/model => ../model
