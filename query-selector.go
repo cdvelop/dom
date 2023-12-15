@@ -2,6 +2,8 @@ package dom
 
 import (
 	"syscall/js"
+
+	"github.com/cdvelop/model"
 )
 
 // querySelector ej: "a[name='xxx']"
@@ -23,22 +25,32 @@ func (d Dom) ElementClicking(querySelector string) (err string) {
 // ej: querySelector "meta[name='JsonBootTests']"
 // get_content: "content"
 // set_after true = element.Set("content", "")
-func (d Dom) SelectContent(querySelector, get_content string, set_after bool) (content, err string) {
+func (d Dom) SelectContent(o model.SelectDomOptions) (out any, err string) {
 	const t = "SelectContent error "
-	element, err := query(querySelector)
+	element, err := query(o.QuerySelector)
 	if err != "" {
 		return "", t + err
 	}
 
-	jsValue := element.Get(get_content)
-	if !jsValue.Truthy() { //si retorna algo es por que ocurrió un error
-		return "", t + "contenido: " + get_content + ", no encontrado con get"
+	var jsValue js.Value
+	if o.GetContent != "" {
+		jsValue = element.Get(o.GetContent)
+		if !jsValue.Truthy() { //si retorna algo es por que ocurrió un error
+			return "", t + "contenido: " + o.GetContent + ", no encontrado con get"
+		}
+
+	} else { // si este vació o.GetContent quiere decir que solo necesita el elemento
+		jsValue = element
 	}
 
-	content = jsValue.String()
+	if o.StringReturn {
+		out = jsValue.String()
+	} else {
+		out = jsValue
+	}
 
-	if set_after {
-		jsValue.Set(get_content, "")
+	if o.SetAfter {
+		jsValue.Set(o.GetContent, "")
 	}
 
 	return

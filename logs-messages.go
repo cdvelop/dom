@@ -32,7 +32,7 @@ func (d Dom) UserMessage(message ...any) interface{} {
 		space = " "
 	}
 
-	err := d.CallFunction(d.FunctionMessageName(), opt...)
+	_, err := d.CallFunction(d.FunctionMessageName(), opt...)
 	if err != "" {
 		d.Log("UserMessage error CallFunction", err)
 	}

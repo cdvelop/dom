@@ -21,7 +21,7 @@ func (d Dom) BuildFrontendUI() (err string) {
 
 		}
 
-		d.Log(d.setUserUI(area))
+		d.Log(d.setUserUI(u, area))
 
 	})
 
@@ -31,7 +31,7 @@ func (d Dom) BuildFrontendUI() (err string) {
 	return
 }
 
-func (d Dom) setUserUI(area string) (err string) {
+func (d Dom) setUserUI(u *model.User, area string) (err string) {
 
 	menuContainer := doc.Call("querySelector", d.MenuClassName())
 	navbarContainer := menuContainer.Get("childNodes").Index(0)
@@ -73,7 +73,7 @@ func (d Dom) setUserUI(area string) (err string) {
 			Name:      "div",
 			Id:        m.ModuleName,
 			Class:     d.ModuleClassName(),
-			Content:   m.UI.UserInterface(),
+			Content:   m.UI.UserInterface(u),
 		}
 
 		new_div.Add()
@@ -83,10 +83,8 @@ func (d Dom) setUserUI(area string) (err string) {
 	if area == "" {
 		main_module = d.home_module
 	}
-	d.Log("ElementClicking main_module:", main_module)
 
 	d.Log(d.ElementClicking(d.QuerySelectorMenuModule(main_module)))
 
-	d.Log("main_module:", main_module)
 	return
 }
