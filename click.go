@@ -32,7 +32,7 @@ func (d Dom) UserViewComponentClicked(this js.Value, source_input []js.Value) in
 			// SEARCH_ARGUMENT: object_id,
 			// ORDER_BY:        "",
 			// SORT_DESC:       false,
-		}, func(r model.ReadResults) {
+		}, func(r *model.ReadResults, err string) {
 
 			if err != "" {
 				d.Log(err)

@@ -27,16 +27,12 @@ func (d Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 	d.Log("ELIMINANDO OBJETO:", o.ObjectName, "object_id", object_id)
 
 	d.ReadAsyncDataDB(model.ReadParams{
-		FROM_TABLE:      o.Table,
-		ID:              object_id,
-		WHERE:           []string{},
-		SEARCH_ARGUMENT: "",
-		ORDER_BY:        "",
-		SORT_DESC:       false,
-	}, func(r model.ReadResults) {
+		FROM_TABLE: o.Table,
+		ID:         object_id,
+	}, func(r *model.ReadResults, err string) {
 
-		if r.Error != "" {
-			d.Log(r.Error)
+		if err != "" {
+			d.Log(err)
 			return
 		}
 
