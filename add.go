@@ -17,10 +17,10 @@ func init() {
 }
 
 // home_module ej:session
-func New(h *model.Handlers, home_module string) *Dom {
+func New(h *model.MainHandler, home_module string) *Dom {
 
 	dom := Dom{
-		Handlers:    h,
+		MainHandler: h,
 		home_module: home_module,
 	}
 

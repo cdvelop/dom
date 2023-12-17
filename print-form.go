@@ -14,7 +14,7 @@ func (d Dom) printForm(this js.Value, p []js.Value) interface{} {
 		return nil
 	}
 
-	o, err := d.GetObjectByName(object_name.String())
+	o, err := d.GetObjectByNameMainHandler(object_name.String())
 	if err != "" {
 		d.UserMessage(err)
 		return nil

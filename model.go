@@ -7,7 +7,7 @@ import (
 )
 
 type Dom struct {
-	*model.Handlers
+	*model.MainHandler
 	home_module string
 }
 

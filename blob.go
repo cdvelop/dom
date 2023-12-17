@@ -14,7 +14,7 @@ func (d Dom) saveBlobFile(this js.Value, p []js.Value) interface{} {
 	object_id := p[1].String()   // arg 2
 	blob := p[2]                 // arg 3
 
-	o, err := d.GetObjectByName(object_name)
+	o, err := d.GetObjectByNameMainHandler(object_name)
 	if err != "" {
 		return d.Log(err)
 	}
