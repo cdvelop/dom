@@ -8,7 +8,7 @@ func (d Dom) addDataToLocalDB(responses ...model.Response) {
 
 		// d.Log("domUpdate .... buscando objeto", r.Object)
 
-		object, err := d.GetObjectByNameMainHandler(r.Object)
+		object, err := d.MainHandlerGetObjectByName(r.Object)
 		if err != "" {
 			d.Log(err)
 			continue

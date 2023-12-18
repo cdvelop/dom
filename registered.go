@@ -6,7 +6,9 @@ import (
 
 func (d Dom) registerGlobalFunctions() {
 
-	js.Global().Set("userViewComponentClicked", js.FuncOf(d.userViewComponentClicked))
+	js.Global().Set("moduleClickedUI", js.FuncOf(d.moduleClickedUI))
+
+	js.Global().Set("objectClickedUI", js.FuncOf(d.objectClickedUI))
 
 	js.Global().Set("saveBlobFile", js.FuncOf(d.saveBlobFile))
 

@@ -38,7 +38,7 @@ func (d Dom) setUserUI(u *model.User, area string) (err string) {
 
 	var index_menu int
 	var main_module string
-	for _, m := range d.GetModules() {
+	for _, m := range d.MainHandlerGetModules() {
 
 		module_html := doc.Call("querySelector", d.QuerySelectorMenuModule(m.ModuleName))
 		if !module_html.IsNull() { // si no es nulo ya existe el modulo el en dom por ende continuamos al siguiente

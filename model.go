@@ -9,6 +9,11 @@ import (
 type Dom struct {
 	*model.MainHandler
 	home_module string
+
+	object_name string
+	object_id   string
+
+	err string
 }
 
 type HtmlElement struct {
