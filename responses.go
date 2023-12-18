@@ -2,38 +2,38 @@ package dom
 
 import "github.com/cdvelop/model"
 
-func (d Dom) addDataToLocalDB(responses ...model.Response) {
-
+func (d *Dom) addDataToLocalDB(responses ...model.Response) {
+	const e = ". addDataToLocalDB"
 	for _, r := range responses {
 
 		// d.Log("domUpdate .... buscando objeto", r.Object)
 
-		object, err := d.MainHandlerGetObjectByName(r.Object)
-		if err != "" {
-			d.Log(err)
+		d.err = d.SetActualObject(r.Object)
+		if d.err != "" {
+			d.Log(d.err + e)
 			continue
 		}
 
 		switch r.Action {
 		case "create":
 
-			if object.FrontHandler.AfterCreate != nil {
+			if d.objectActual.FrontHandler.AfterCreate != nil {
 
-				// module_html, err := getHtmlModule(object.ModuleName)
+				// module_html, err := getHtmlModule(d.objectActual.ModuleName)
 				// if err != nil {
 				// 	d.Log(err)
 				// 	continue
 				// }
 
-				err = object.FrontHandler.AfterCreate.SetObjectInDomAfterCreate(r.Data...)
-				if err != "" {
-					d.UserMessage("err", err)
+				d.err = d.objectActual.FrontHandler.AfterCreate.SetObjectInDomAfterCreate(r.Data...)
+				if d.err != "" {
+					d.UserMessage("error", d.err)
 					continue
 				}
 
 				// html_container := module_html.Call("querySelector", `div[data-id="`+container_id+`"]`)
 				// if !html_container.Truthy() {
-				// 	d.Log("error no se logro obtener contenedor data-id:", container_id, "objeto:", object.Name)
+				// 	d.Log("error no se logro obtener contenedor data-id:", container_id, "objeto:", d.objectActual.Name)
 				// 	continue
 				// }
 
@@ -42,7 +42,7 @@ func (d Dom) addDataToLocalDB(responses ...model.Response) {
 				// html_container.Call("insertAdjacentHTML", "beforeend", tags)
 
 			} else {
-				d.Log("objeto", object.ObjectName, "no contiene AfterCreate")
+				d.Log("objeto", d.objectActual.ObjectName, "no contiene AfterCreate")
 			}
 
 		case "read":

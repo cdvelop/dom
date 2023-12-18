@@ -6,28 +6,28 @@ import (
 	"github.com/cdvelop/model"
 )
 
-func (d Dom) deleteObject(this js.Value, p []js.Value) interface{} {
-
+func (d *Dom) deleteObject(this js.Value, p []js.Value) interface{} {
+	const e = ". deleteObject"
 	if len(p) != 2 {
-		return d.Log("error deleteObject required 2 args: object name and object id to delete")
+		return d.Log("required 2 args: object name and object id" + e)
 	}
 
 	object_name := p[0].String() //  arg 1
 	object_id := p[1].String()   // arg 2
 
-	o, err := d.MainHandlerGetObjectByName(object_name)
-	if err != "" {
-		return d.Log(err)
+	d.err = d.SetActualObject(object_name)
+	if d.err != "" {
+		return d.Log(d.err)
 	}
 
-	if o.FrontHandler.AfterDelete == nil {
-		return d.Log("error objeto", o.ObjectName, "no cuenta con controlador para eliminar")
+	if d.objectActual.FrontHandler.AfterDelete == nil {
+		return d.Log("error objeto", d.objectActual.ObjectName, "no cuenta con controlador para eliminar")
 	}
 
-	d.Log("ELIMINANDO OBJETO:", o.ObjectName, "object_id", object_id)
+	d.Log("ELIMINANDO OBJETO:", d.objectActual.ObjectName, "object_id", object_id)
 
 	d.ReadAsyncDataDB(model.ReadParams{
-		FROM_TABLE: o.Table,
+		FROM_TABLE: d.objectActual.Table,
 		ID:         object_id,
 	}, func(r *model.ReadResults, err string) {
 
@@ -56,7 +56,7 @@ func (d Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 			d.Log("* id-", object_id, " eliminar en el servidor")
 
 			if d.FetchAdapter == nil {
-				d.Log("*error httpAdapter nulo en objeto", o.ObjectName)
+				d.Log("*error httpAdapter nulo en objeto", d.objectActual.ObjectName)
 				return
 			}
 

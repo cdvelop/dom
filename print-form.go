@@ -2,30 +2,30 @@ package dom
 
 import "syscall/js"
 
-func (d Dom) printForm(this js.Value, p []js.Value) interface{} {
-
+func (d *Dom) printForm(this js.Value, p []js.Value) interface{} {
+	const e = ". printForm"
 	if len(p) != 1 {
-		return d.Log("error printForm required 1 args")
+		return d.Log("required 1 args" + e)
 	}
 
-	object_name := p[0].Get("dataset").Get("object_name")
-	if !object_name.Truthy() {
-		d.UserMessage("error", "no se logro obtener nombre del formulario para imprimir")
+	d.objectJS = p[0].Get("dataset").Get("object_name")
+	if !d.objectJS.Truthy() {
+		d.UserMessage("error no se logro obtener nombre del formulario para imprimir")
 		return nil
 	}
 
-	o, err := d.MainHandlerGetObjectByName(object_name.String())
-	if err != "" {
-		d.UserMessage(err)
+	d.err = d.SetActualObject(d.objectJS.String())
+	if d.err != "" {
+		d.UserMessage(d.err)
 		return nil
 	}
 
-	if o.PrinterHandler == nil {
-		d.UserMessage("err", o.Title, "no cuenta con controlador para imprimir")
+	if d.objectActual.PrinterHandler == nil {
+		d.UserMessage("err", d.objectActual.Title, "no cuenta con controlador para imprimir")
 		return nil
 	}
 
-	o.PrintFormObject()
+	d.objectActual.PrintFormObject()
 
 	return nil
 

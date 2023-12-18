@@ -3,7 +3,7 @@ package dom
 import "syscall/js"
 
 func (d Dom) moduleClickedUI(t js.Value, module []js.Value) interface{} {
-	const e = " func moduleClickedUI error"
+	const e = ". moduleClickedUI"
 	if len(module) != 1 {
 		return d.Log("se requiere un argumento" + e)
 	}

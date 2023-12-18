@@ -38,7 +38,12 @@ func (d Dom) setUserUI(u *model.User, area string) (err string) {
 
 	var index_menu int
 	var main_module string
-	for _, m := range d.MainHandlerGetModules() {
+	d.Log("TOTAL OBJETOS:", len(d.GetAllObjects()))
+	for _, m := range d.GetAllObjects() {
+		d.Log("MODULO UI:", m.ModuleName)
+	}
+
+	for _, m := range d.GetModules() {
 
 		module_html := doc.Call("querySelector", d.QuerySelectorMenuModule(m.ModuleName))
 		if !module_html.IsNull() { // si no es nulo ya existe el modulo el en dom por ende continuamos al siguiente
@@ -67,6 +72,7 @@ func (d Dom) setUserUI(u *model.User, area string) (err string) {
 		new_li.Add()
 
 		// CONSTRUIMOS CONTENEDOR MODULO HTML
+		d.Log("CONSTRUYENDO UI modulo: ", m.ModuleName)
 
 		new_div := HtmlElement{
 			Container: body,
@@ -78,6 +84,7 @@ func (d Dom) setUserUI(u *model.User, area string) (err string) {
 
 		new_div.Add()
 
+		d.Log("UI CONSTRUIDA: ", m.ModuleName)
 	}
 
 	if area == "" {

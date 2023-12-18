@@ -8,10 +8,16 @@ import (
 
 type Dom struct {
 	*model.MainHandler
+
+	moduleActual *model.Module
+	objects      []*model.Object
+	objectActual *model.Object
+
 	home_module string
 
-	object_name string
-	object_id   string
+	objectJS   js.Value
+	objectNAME string
+	objectID   string
 
 	err string
 }
