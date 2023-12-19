@@ -14,7 +14,7 @@ func (d *Dom) printForm(this js.Value, p []js.Value) interface{} {
 		return nil
 	}
 
-	d.err = d.setActualObject(d.objectJS.String())
+	d.err = d.SetActualObject(d.objectJS.String())
 	if d.err != "" {
 		d.UserMessage(d.err)
 		return nil

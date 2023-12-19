@@ -8,7 +8,7 @@ func (d *Dom) addDataToLocalDB(responses ...model.Response) {
 
 		// d.Log("domUpdate .... buscando objeto", r.Object)
 
-		d.err = d.setActualObject(r.Object)
+		d.err = d.SetActualObject(r.Object)
 		if d.err != "" {
 			d.Log(d.err + e)
 			continue

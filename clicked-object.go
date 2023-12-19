@@ -15,9 +15,9 @@ func (d *Dom) objectClickedUI(this js.Value, source_input []js.Value) interface{
 	d.stringVAR = source_input[0].String() //NOMBRE OBJETO
 	d.objectID = source_input[1].String()  //ID OBJETO
 
-	// d.Log("OBJECTO CLICK:", stringVAR)
+	d.Log("OBJECTO CLICK:", d.stringVAR)
 
-	d.err = d.setActualObject(d.stringVAR)
+	d.err = d.SetActualObject(d.stringVAR)
 	if d.err != "" {
 		return d.Log(d.err + e)
 	}
@@ -46,7 +46,7 @@ func (d *Dom) objectClickedUI(this js.Value, source_input []js.Value) interface{
 		})
 
 	} else {
-		return d.UserMessage("error objeto:", d.ObjectActual().ObjectName, "no tiene controlador: UserHasClickedObject(id string)")
+		return d.UserMessage("error objeto:", d.ObjectActual().ObjectName, "no tiene controlador: UserHasClickedObject()")
 	}
 
 	return nil

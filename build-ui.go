@@ -38,12 +38,12 @@ func (d Dom) setUserUI(u *model.User, area string) (err string) {
 
 	var index_menu int
 	var main_module string
-	d.Log("TOTAL OBJETOS:", len(d.GetAllObjects()))
-	for _, m := range d.GetAllObjects() {
-		d.Log("MODULO UI:", m.ModuleName)
-	}
 
 	for _, m := range d.GetModules() {
+
+		if m.UI == nil { // modulo no cuenta con ui
+			continue
+		}
 
 		module_html := doc.Call("querySelector", d.QuerySelectorMenuModule(m.ModuleName))
 		if !module_html.IsNull() { // si no es nulo ya existe el modulo el en dom por ende continuamos al siguiente

@@ -15,7 +15,7 @@ func (d *Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 	object_name := p[0].String() //  arg 1
 	object_id := p[1].String()   // arg 2
 
-	d.err = d.setActualObject(object_name)
+	d.err = d.SetActualObject(object_name)
 	if d.err != "" {
 		return d.Log(d.err)
 	}

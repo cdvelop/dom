@@ -14,7 +14,7 @@ func (d *Dom) saveBlobFile(this js.Value, p []js.Value) interface{} {
 	object_id := p[1].String()   // arg 2
 	blob := p[2]                 // arg 3
 
-	d.err = d.setActualObject(object_name)
+	d.err = d.SetActualObject(object_name)
 	if d.err != "" {
 		return d.Log(d.err + e)
 	}

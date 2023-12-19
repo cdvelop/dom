@@ -32,8 +32,8 @@ func (d *Dom) GetModuleByName(module_name string) (m *model.Module, err string) 
 	return nil, "modulo: " + module_name + ", no encontrado" + e
 }
 
-func (d *Dom) setActualObject(object_name string) (err string) {
-	const e = ". setActualObject"
+func (d *Dom) SetActualObject(object_name string) (err string) {
+	const e = ". SetActualObject"
 
 	// nada que hacer
 	if d.clickedObject != nil && d.clickedObject.ObjectName == object_name {
@@ -66,18 +66,4 @@ func (d *Dom) setActualObject(object_name string) (err string) {
 
 func (d *Dom) ObjectActual() *model.Object {
 	return d.clickedObject
-}
-
-func (d *Dom) GetAllObjects() []*model.Object {
-
-	if len(d.objects) != 0 {
-		return d.objects
-	}
-
-	for _, m := range d.GetModules() {
-		d.objects = append(d.objects, m.GetObjects()...)
-	}
-
-	return d.objects
-
 }
