@@ -9,24 +9,24 @@ import (
 func (d *Dom) objectClickedUI(this js.Value, source_input []js.Value) interface{} {
 	const e = ". objectClickedUI"
 	if len(source_input) != 2 {
-		return d.Log("error se espera: nombre del objeto y id seleccionado")
+		return d.Log("error se espera: nombre del objeto y id seleccionado" + e)
 	}
 
-	d.objectNAME = source_input[0].String()
-	d.objectID = source_input[1].String()
+	d.stringVAR = source_input[0].String() //NOMBRE OBJETO
+	d.objectID = source_input[1].String()  //ID OBJETO
 
-	// d.Log("OBJECTO CLICK:", objectNAME)
+	// d.Log("OBJECTO CLICK:", stringVAR)
 
-	d.err = d.SetActualObject(d.objectNAME)
+	d.err = d.setActualObject(d.stringVAR)
 	if d.err != "" {
 		return d.Log(d.err + e)
 	}
 
-	if d.objectActual.FrontHandler.AfterClicked != nil {
+	if d.ObjectActual().FrontHandler.AfterClicked != nil {
 
 		//1- leer data del objeto
 		d.ReadAsyncDataDB(model.ReadParams{
-			FROM_TABLE: d.objectActual.Table,
+			FROM_TABLE: d.ObjectActual().Table,
 			ID:         d.objectID,
 		}, func(r *model.ReadResults, err string) {
 
@@ -37,16 +37,16 @@ func (d *Dom) objectClickedUI(this js.Value, source_input []js.Value) interface{
 
 			// pasamos la data al formulario del objeto
 			if len(r.ResultsString) == 1 {
-				d.objectActual.FormData = r.ResultsString[0]
+				d.ObjectActual().FormData = r.ResultsString[0]
 			}
 
 			// llamamos al manejador
-			d.objectActual.FrontHandler.UserHasClickedObject()
+			d.ObjectActual().FrontHandler.UserHasClickedObject()
 
 		})
 
 	} else {
-		return d.UserMessage("error objeto:", d.objectActual.ObjectName, "no tiene controlador: UserHasClickedObject(id string)")
+		return d.UserMessage("error objeto:", d.ObjectActual().ObjectName, "no tiene controlador: UserHasClickedObject(id string)")
 	}
 
 	return nil

@@ -14,18 +14,18 @@ func (d *Dom) printForm(this js.Value, p []js.Value) interface{} {
 		return nil
 	}
 
-	d.err = d.SetActualObject(d.objectJS.String())
+	d.err = d.setActualObject(d.objectJS.String())
 	if d.err != "" {
 		d.UserMessage(d.err)
 		return nil
 	}
 
-	if d.objectActual.PrinterHandler == nil {
-		d.UserMessage("err", d.objectActual.Title, "no cuenta con controlador para imprimir")
+	if d.ObjectActual().PrinterHandler == nil {
+		d.UserMessage("err", d.ObjectActual().Title, "no cuenta con controlador para imprimir")
 		return nil
 	}
 
-	d.objectActual.PrintFormObject()
+	d.ObjectActual().PrintFormObject()
 
 	return nil
 

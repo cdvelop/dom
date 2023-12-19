@@ -2,23 +2,12 @@ package dom
 
 import "github.com/cdvelop/model"
 
-func (d *Dom) SetActualModule(module_name string) (err string) {
-
-	if d.moduleActual != nil && d.moduleActual.ModuleName == module_name {
-		return
-	}
-
-	d.moduleActual, err = d.GetModuleByName(module_name)
-
-	return
-}
-
 // obtener modulo en uso actualmente por el usuario
 func (d *Dom) GetActualModule() (o *model.Module, err string) {
-	if d.moduleActual == nil {
+	if d.clickedModule == nil {
 		return nil, "modulo actual no definido. GetActualModule"
 	}
-	return d.moduleActual, ""
+	return d.clickedModule, ""
 }
 
 func (d *Dom) GetModuleByName(module_name string) (m *model.Module, err string) {
@@ -43,29 +32,40 @@ func (d *Dom) GetModuleByName(module_name string) (m *model.Module, err string) 
 	return nil, "modulo: " + module_name + ", no encontrado" + e
 }
 
-func (d *Dom) SetActualObject(object_name string) (err string) {
-	const e = ". SetActualObject"
-	if d.moduleActual == nil {
-		return "modulo actual no definido" + e
+func (d *Dom) setActualObject(object_name string) (err string) {
+	const e = ". setActualObject"
+
+	// nada que hacer
+	if d.clickedObject != nil && d.clickedObject.ObjectName == object_name {
+		return ""
 	}
 
-	err = d.moduleActual.SetActualModuleObject(object_name)
-	if err != "" {
-		err = err + e
+	// busco el objeto primero en el modulo actual
+	if d.clickedModule != nil {
+		d.clickedObject, d.err = d.clickedModule.GetActualModuleObject()
+		// solo comprobar si no hay error puede que el objeto no sea de este modulo
+		if d.err == "" && d.clickedObject.ObjectName == object_name {
+			return "" //es el objeto correcto
+		}
 	}
 
-	return
+	// busco el objeto en todos los módulos
+	for _, m := range d.GetModules() {
+
+		d.clickedObject, d.err = m.GetObject(object_name)
+		if d.clickedObject != nil && d.err == "" {
+			// actualizar el objeto actual
+			d.clickedObject.SetActualObject()
+
+			return ""
+		}
+	}
+
+	return "no se logro encontrar objeto:" + object_name + e
 }
 
 func (d *Dom) ObjectActual() *model.Object {
-
-	d.objectActual, d.err = d.moduleActual.GetActualModuleObject()
-	if d.err != "" {
-		d.Log("ObjectActual", d.err)
-		return nil
-	}
-
-	return d.objectActual
+	return d.clickedObject
 }
 
 func (d *Dom) GetAllObjects() []*model.Object {
@@ -75,8 +75,9 @@ func (d *Dom) GetAllObjects() []*model.Object {
 	}
 
 	for _, m := range d.GetModules() {
-		d.objects = append(d.objects, m.Objects...)
+		d.objects = append(d.objects, m.GetObjects()...)
 	}
 
 	return d.objects
+
 }

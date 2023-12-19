@@ -29,10 +29,7 @@ func New(h *model.MainHandler, home_module string) *Dom {
 	h.HtmlAdapter = d
 	h.ObjectHandlerAdapter = d
 
-	d.err = d.SetActualModule(home_module)
-	if d.err != "" {
-		d.Log("dom new error:", d.err)
-	}
+	d.Log(d.setModuleActual(home_module))
 
 	return d
 }

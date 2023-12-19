@@ -15,19 +15,19 @@ func (d *Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 	object_name := p[0].String() //  arg 1
 	object_id := p[1].String()   // arg 2
 
-	d.err = d.SetActualObject(object_name)
+	d.err = d.setActualObject(object_name)
 	if d.err != "" {
 		return d.Log(d.err)
 	}
 
-	if d.objectActual.FrontHandler.AfterDelete == nil {
-		return d.Log("error objeto", d.objectActual.ObjectName, "no cuenta con controlador para eliminar")
+	if d.ObjectActual().FrontHandler.AfterDelete == nil {
+		return d.Log("error objeto", d.ObjectActual().ObjectName, "no cuenta con controlador para eliminar")
 	}
 
-	d.Log("ELIMINANDO OBJETO:", d.objectActual.ObjectName, "object_id", object_id)
+	d.Log("ELIMINANDO OBJETO:", d.ObjectActual().ObjectName, "object_id", object_id)
 
 	d.ReadAsyncDataDB(model.ReadParams{
-		FROM_TABLE: d.objectActual.Table,
+		FROM_TABLE: d.ObjectActual().Table,
 		ID:         object_id,
 	}, func(r *model.ReadResults, err string) {
 
@@ -56,7 +56,7 @@ func (d *Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 			d.Log("* id-", object_id, " eliminar en el servidor")
 
 			if d.FetchAdapter == nil {
-				d.Log("*error httpAdapter nulo en objeto", d.objectActual.ObjectName)
+				d.Log("*error httpAdapter nulo en objeto", d.ObjectActual().ObjectName)
 				return
 			}
 

@@ -14,7 +14,7 @@ func (d *Dom) saveBlobFile(this js.Value, p []js.Value) interface{} {
 	object_id := p[1].String()   // arg 2
 	blob := p[2]                 // arg 3
 
-	d.err = d.SetActualObject(object_name)
+	d.err = d.setActualObject(object_name)
 	if d.err != "" {
 		return d.Log(d.err + e)
 	}
@@ -26,22 +26,22 @@ func (d *Dom) saveBlobFile(this js.Value, p []js.Value) interface{} {
 
 	// d.Log("DATA ANTES DE CREAR:", data)
 
-	d.err = d.CreateObjectsInDB(d.objectActual.Table, true, data)
+	d.err = d.CreateObjectsInDB(d.ObjectActual().Table, true, data)
 	if d.err != "" {
 		return d.Log(d.err + e)
 	}
 	// d.Log("DESPUÉS:", data)
 
-	if d.objectActual.FrontHandler.ObjectViewHandler != nil {
+	if d.ObjectActual().FrontHandler.ObjectViewHandler != nil {
 
-		fiel_id := d.objectActual.PrimaryKeyName()
+		fiel_id := d.ObjectActual().PrimaryKeyName()
 
-		html := d.objectActual.FrontHandler.BuildItemsView(map[string]string{
+		html := d.ObjectActual().FrontHandler.BuildItemsView(map[string]string{
 			fiel_id: data[fiel_id].(string),
 			"url":   data["url"].(string),
 		})
 
-		d.err = d.InsertAfterBegin(d.QuerySelectorObject(d.objectActual.ModuleName, d.objectActual.ObjectName), html)
+		d.err = d.InsertAfterBegin(d.QuerySelectorObject(d.ObjectActual().ModuleName, d.ObjectActual().ObjectName), html)
 		if d.err != "" {
 			d.Log(d.err + e)
 		}
