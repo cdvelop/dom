@@ -31,5 +31,7 @@ func New(h *model.MainHandler, home_module string) *Dom {
 
 	d.Log(d.setModuleActual(home_module))
 
+	h.DevicePeripherals.KeyboardClientAdapter = d
+
 	return d
 }

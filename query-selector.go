@@ -8,15 +8,24 @@ import (
 
 // querySelector ej: "a[name='xxx']"
 func (d Dom) ElementClicking(querySelector string) (err string) {
-	const this = "ElementClicking error "
-	element, err := query(querySelector)
+	return d.elementCall("ElementClicking", querySelector, "click")
+}
+
+func (d Dom) ElementFocus(querySelector string) (err string) {
+	return d.elementCall("ElementFocus", querySelector, "focus")
+}
+
+// call ej: focus,click
+func (d Dom) elementCall(e, querySelector, call string) (err string) {
+
+	d.elementJS, err = query(querySelector)
 	if err != "" {
-		return this + err
+		return e + " " + err
 	}
 
-	result := element.Call("click")
+	result := d.elementJS.Call(call)
 	if result.Truthy() { //si retorna algo es por que ocurrió un error
-		return this + result.String()
+		return e + " " + result.String()
 	}
 
 	return ""

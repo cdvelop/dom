@@ -15,7 +15,7 @@ func (d *Dom) objectClickedUI(this js.Value, source_input []js.Value) interface{
 	d.stringVAR = source_input[0].String() //NOMBRE OBJETO
 	d.objectID = source_input[1].String()  //ID OBJETO
 
-	d.Log("OBJECTO CLICK:", d.stringVAR)
+	// d.Log("OBJECTO CLICK:", d.stringVAR)
 
 	d.err = d.SetActualObject(d.stringVAR)
 	if d.err != "" {

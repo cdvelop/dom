@@ -9,17 +9,19 @@ import (
 type Dom struct {
 	*model.MainHandler
 
-	objects []*model.Object
-
 	clickedModule *model.Module // modulo cliqueado por usuario
 	clickedObject *model.Object //objeto cliqueado por usuario
 
 	home_module string
 
 	// cache vars
-	objectJS  js.Value
+	elementJS js.Value
 	stringVAR string //variable temporal
 	objectID  string
+
+	//keyboard
+	keyboardFunc js.Func
+	keyCode      int
 
 	err string
 }

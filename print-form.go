@@ -8,13 +8,13 @@ func (d *Dom) printForm(this js.Value, p []js.Value) interface{} {
 		return d.Log("required 1 args" + e)
 	}
 
-	d.objectJS = p[0].Get("dataset").Get("object_name")
-	if !d.objectJS.Truthy() {
+	d.elementJS = p[0].Get("dataset").Get("object_name")
+	if !d.elementJS.Truthy() {
 		d.UserMessage("error no se logro obtener nombre del formulario para imprimir")
 		return nil
 	}
 
-	d.err = d.SetActualObject(d.objectJS.String())
+	d.err = d.SetActualObject(d.elementJS.String())
 	if d.err != "" {
 		d.UserMessage(d.err)
 		return nil

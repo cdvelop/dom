@@ -2,6 +2,7 @@ package dom
 
 import (
 	"strconv"
+	"syscall/js"
 
 	"github.com/cdvelop/model"
 )
@@ -34,6 +35,9 @@ func (d Dom) BuildFrontendUI() (err string) {
 func (d Dom) setUserUI(u *model.User, area string) (err string) {
 
 	menuContainer := doc.Call("querySelector", d.MenuClassName())
+	// Agrega la propiedad onclick al elemento
+	menuContainer.Set("onclick", js.FuncOf(d.moduleClickedUI))
+
 	navbarContainer := menuContainer.Get("childNodes").Index(0)
 
 	var index_menu int
@@ -72,7 +76,7 @@ func (d Dom) setUserUI(u *model.User, area string) (err string) {
 		new_li.Add()
 
 		// CONSTRUIMOS CONTENEDOR MODULO HTML
-		d.Log("CONSTRUYENDO UI modulo: ", m.ModuleName)
+		// d.Log("CONSTRUYENDO UI modulo: ", m.ModuleName)
 
 		new_div := HtmlElement{
 			Container: body,
@@ -84,7 +88,7 @@ func (d Dom) setUserUI(u *model.User, area string) (err string) {
 
 		new_div.Add()
 
-		d.Log("UI CONSTRUIDA: ", m.ModuleName)
+		// d.Log("UI CONSTRUIDA: ", m.ModuleName)
 	}
 
 	if area == "" {
