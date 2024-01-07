@@ -2,12 +2,10 @@ package dom
 
 import (
 	"syscall/js"
-
-	"github.com/cdvelop/model"
 )
 
-func (d *Dom) deleteObject(this js.Value, p []js.Value) interface{} {
-	const e = ". deleteObject"
+func (d *Dom) deleteObject(this js.Value, p []js.Value) any {
+	const e = ". deleteObject error"
 	if len(p) != 2 {
 		return d.Log("required 2 args: object name and []ids string " + e)
 	}
@@ -20,7 +18,7 @@ func (d *Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 	}
 
 	if d.ObjectActual().FrontHandler.AfterDelete == nil {
-		return d.Log("error objeto", d.ObjectActual().ObjectName, "no cuenta con controlador para eliminar")
+		return d.Log("objeto", d.ObjectActual().ObjectName, "no cuenta con controlador para eliminar")
 	}
 
 	object_ids := make([]map[string]string, 0)
@@ -37,93 +35,26 @@ func (d *Dom) deleteObject(this js.Value, p []js.Value) interface{} {
 
 		}
 	} else {
-		return d.Log("error se esperaba un array de string como parámetro 2" + e)
+		return d.Log("se esperaba un array de string como parámetro" + e)
 	}
 
-	d.ReadAsyncDataDB(model.ReadParams{
-		FROM_TABLE: d.ObjectActual().Table,
-		WHERE:      object_ids,
-	}, func(r *model.ReadResults, err string) {
-
-		if err != "" {
-			d.Log(err)
-			return
-		}
-
-		var delete_frontend []map[string]string
-		var delete_backend []map[string]string
-
-		for _, item := range r.ResultsString {
-			for _, action := range []string{"create", "update", "delete"} {
-				if value, exist := item[action]; exist && value != "" {
-					// d.Log("-item a eliminar en el frontend:", item)
-					delete_frontend = append(delete_frontend, map[string]string{
-						pk_name: item[pk_name],
-					})
-					break
-				} else {
-					// d.Log("-item a eliminar en el backend:", item)
-					delete_backend = append(delete_backend, map[string]string{
-						pk_name: item[pk_name],
-					})
-					break
-				}
-			}
-		}
-
-		// d.Log("delete_frontend:", delete_frontend)
-		// d.Log("delete_backend:", delete_backend)
-
-		if len(delete_frontend) != 0 {
-
-			err = d.deleteFrontend(delete_frontend)
-			if err != "" {
-				d.UserMessage(err)
-				return
-			}
-
-			d.UserMessage("item eliminado")
-
-		} else if len(delete_backend) != 0 {
-
-			d.SendOneRequest("POST", "delete", object_name, delete_backend, func(resp []map[string]string, err string) {
-
-				if err != "" {
-					d.UserMessage(err)
-					return
-				}
-
-				// d.Log("RESPUESTA SERVIDOR ELIMINACIÓN:", resp)
-
-				err = d.deleteFrontend(delete_backend)
-				if err != "" {
-					d.UserMessage(err)
-					return
-				}
-
-				d.UserMessage("item eliminado")
-
-			})
-
-		}
-
-	})
-
-	return nil
-
-}
-
-func (d Dom) deleteFrontend(delete_frontend []map[string]string) (err string) {
-
-	// d.Log("* eliminar en local:", delete_frontend)
-
-	err = d.DeleteObjectsInDB(d.ObjectActual().Table, delete_frontend...)
-	if err != "" {
-		return err
+	d.err = d.DeleteObjectsInDB(d.ObjectActual().Table, true, object_ids...)
+	if d.err != "" {
+		return d.Log(d.err + e)
 	}
 
 	if d.ObjectActual().FrontHandler.AfterDelete != nil {
-		err = d.ObjectActual().FrontHandler.SetObjectInDomAfterDelete(delete_frontend...)
+		d.err = d.ObjectActual().FrontHandler.SetObjectInDomAfterDelete(object_ids...)
+		if d.err != "" {
+			return d.Log(d.err + e)
+		}
+
+		d.UserMessage("item eliminado")
+
+	} else {
+		d.Log("objeto:", d.ObjectActual().ObjectName, "no cuenta con FrontHandler.AfterDelete"+e)
 	}
-	return
+
+	return nil
+
 }
