@@ -4,10 +4,10 @@ import "github.com/cdvelop/model"
 
 // obtener modulo en uso actualmente por el usuario
 func (d *Dom) GetActualModule() (o *model.Module, err string) {
-	if d.clickedModule == nil {
+	if d.actualModule == nil {
 		return nil, "modulo actual no definido. GetActualModule"
 	}
-	return d.clickedModule, ""
+	return d.actualModule, ""
 }
 
 func (d *Dom) GetModuleByName(module_name string) (m *model.Module, err string) {
@@ -30,40 +30,4 @@ func (d *Dom) GetModuleByName(module_name string) (m *model.Module, err string) 
 	}
 
 	return nil, "modulo: " + module_name + ", no encontrado" + e
-}
-
-func (d *Dom) SetActualObject(object_name string) (err string) {
-	const e = ". SetActualObject"
-
-	// nada que hacer
-	if d.clickedObject != nil && d.clickedObject.ObjectName == object_name {
-		return ""
-	}
-
-	// busco el objeto primero en el modulo actual
-	if d.clickedModule != nil {
-		d.clickedObject, d.err = d.clickedModule.GetActualModuleObject()
-		// solo comprobar si no hay error puede que el objeto no sea de este modulo
-		if d.err == "" && d.clickedObject.ObjectName == object_name {
-			return "" //es el objeto correcto
-		}
-	}
-
-	// busco el objeto en todos los módulos
-	for _, m := range d.GetModules() {
-
-		d.clickedObject, d.err = m.GetObject(object_name)
-		if d.clickedObject != nil && d.err == "" {
-			// actualizar el objeto actual
-			d.clickedObject.SetActualObject()
-
-			return ""
-		}
-	}
-
-	return "no se logro encontrar objeto:" + object_name + e
-}
-
-func (d *Dom) ObjectActual() *model.Object {
-	return d.clickedObject
 }

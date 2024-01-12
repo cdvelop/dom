@@ -9,8 +9,8 @@ import (
 type Dom struct {
 	*model.MainHandler
 
-	clickedModule *model.Module // modulo cliqueado por usuario
-	clickedObject *model.Object //objeto cliqueado por usuario
+	actualModule *model.Module // modulo cliqueado por usuario
+	actualObject *model.Object //objeto en uso por usuario
 
 	home_module string
 
@@ -23,7 +23,8 @@ type Dom struct {
 	keyboardFunc js.Func
 	keyCode      int
 
-	err string
+	fnJsCall model.CallJsOptions
+	err      string
 }
 
 type HtmlElement struct {

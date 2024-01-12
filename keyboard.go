@@ -4,6 +4,15 @@ import "syscall/js"
 
 func (d *Dom) keyboardHandler(this js.Value, p []js.Value) interface{} {
 
+	const e = "keyboardHandler error"
+
+	// d.Log(e, "recuperar nombre objeto:", p[0])
+	d.err = d.setActualObject(p[0].Get("target").Get("form").Get("name").String())
+	if d.err != "" {
+		d.Log(e + d.err)
+		return nil
+	}
+
 	// Obtiene el código de la tecla presionada
 	d.keyCode = p[0].Get("keyCode").Int()
 
@@ -12,14 +21,13 @@ func (d *Dom) keyboardHandler(this js.Value, p []js.Value) interface{} {
 		// Previene la acción por defecto de la tecla Enter
 		p[0].Call("preventDefault")
 
-		// d.Log("objeto:", d.clickedObject.ObjectName)
+		d.KeyboardClientDisable(true)
 
-		if d.clickedObject.KeyboardHandlerObject.KeyEnterAdapter != nil {
-			d.clickedObject.KeyboardHandlerObject.KeyEnter()
+		if d.actualObject.KeyboardHandlerObject.KeyEnterAdapter != nil {
+			d.actualObject.KeyboardHandlerObject.KeyEnter()
 		}
 
 		// d.Log("TECLA ENTER PRESIONADA  (código 13)")
-		d.KeyboardClientDisable(true)
 	default:
 		d.Log("info KEYBOARD CODE:", d.keyCode)
 
@@ -45,4 +53,5 @@ func (d *Dom) KeyboardClientDisable(disable bool) {
 
 	}
 
+	return
 }

@@ -1,2 +1,4 @@
+github.com/cdvelop/model v0.0.119 h1:wTUEn/25QCD4HjSUWb27x9tF/ysbv0enuCF4KY5LZJc=
+github.com/cdvelop/model v0.0.119/go.mod h1:cYJNxbv1WV/aDgiVPV9VXs8LrbF8+0nU+X+KfSevyzw=
 github.com/cdvelop/strings v0.0.9 h1:yDh2msl3EQja0dHw+oOHfD9ymQMa50KakKTkjsXDnvw=
 github.com/cdvelop/strings v0.0.9/go.mod h1:zNexDeXHRETbMmlmNThQeM7ksRsvzrphsCfwuSxaURk=

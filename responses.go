@@ -8,7 +8,7 @@ func (d *Dom) addDataToLocalDB(responses ...model.Response) {
 
 		// d.Log("domUpdate .... buscando objeto", r.Object)
 
-		d.err = d.SetActualObject(r.Object)
+		d.actualObject, d.err = d.GetObjectBY(r.Object, "")
 		if d.err != "" {
 			d.Log(d.err + e)
 			continue
@@ -17,15 +17,15 @@ func (d *Dom) addDataToLocalDB(responses ...model.Response) {
 		switch r.Action {
 		case "create":
 
-			if d.ObjectActual().FrontHandler.AfterCreate != nil {
+			if d.actualObject.FrontHandler.AfterCreate != nil {
 
-				// module_html, err := getHtmlModule(d.ObjectActual().ModuleName)
+				// module_html, err := getHtmlModule(d.actualObject.ModuleName)
 				// if err != nil {
 				// 	d.Log(err)
 				// 	continue
 				// }
 
-				d.err = d.ObjectActual().FrontHandler.AfterCreate.SetObjectInDomAfterCreate(r.Data...)
+				d.err = d.actualObject.FrontHandler.AfterCreate.SetObjectInDomAfterCreate(r.Data...)
 				if d.err != "" {
 					d.UserMessage("error", d.err)
 					continue
@@ -33,7 +33,7 @@ func (d *Dom) addDataToLocalDB(responses ...model.Response) {
 
 				// html_container := module_html.Call("querySelector", `div[data-id="`+container_id+`"]`)
 				// if !html_container.Truthy() {
-				// 	d.Log("error no se logro obtener contenedor data-id:", container_id, "objeto:", d.ObjectActual().Name)
+				// 	d.Log("error no se logro obtener contenedor data-id:", container_id, "objeto:", d.object.Name)
 				// 	continue
 				// }
 
@@ -42,7 +42,7 @@ func (d *Dom) addDataToLocalDB(responses ...model.Response) {
 				// html_container.Call("insertAdjacentHTML", "beforeend", tags)
 
 			} else {
-				d.Log("objeto", d.ObjectActual().ObjectName, "no contiene AfterCreate")
+				d.Log("objeto", d.actualObject.ObjectName, "no contiene AfterCreate")
 			}
 
 		case "read":

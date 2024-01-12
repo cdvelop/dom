@@ -30,10 +30,10 @@ func (d *Dom) moduleClickedUI(t js.Value, evt []js.Value) interface{} {
 	if d.err != "" {
 		d.Log(d.err + e)
 	}
-	// d.Log("MODULO ACTUAL:", d.clickedModule.ModuleName)
+	// d.Log("MODULO ACTUAL:", d.actualModule.ModuleName)
 
-	if d.clickedModule.FrontendModuleHandlers.ClickedModuleEventAdapter != nil {
-		d.clickedModule.FrontendModuleHandlers.ClickedModuleEvent()
+	if d.actualModule.FrontendModuleHandlers.ClickedModuleEventAdapter != nil {
+		d.actualModule.FrontendModuleHandlers.ClickedModuleEvent()
 	}
 
 	d.menuRouter(d.elementJS)
@@ -52,11 +52,11 @@ func (d *Dom) setModuleActual(module_name string) (err string) {
 
 	// d.Log("CLICK MODULO:", module_name, e)
 
-	if d.clickedModule != nil && d.clickedModule.ModuleName == module_name {
+	if d.actualModule != nil && d.actualModule.ModuleName == module_name {
 		return "" // nada que hacer
 	}
 
-	d.clickedModule, d.err = d.GetModuleByName(module_name)
+	d.actualModule, d.err = d.GetModuleByName(module_name)
 	if d.err != "" {
 		return d.err + e
 	}

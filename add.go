@@ -27,7 +27,6 @@ func New(h *model.MainHandler, home_module string) *Dom {
 	h.DomAdapter = d
 	h.MessageAdapter = d
 	h.HtmlAdapter = d
-	h.ObjectHandlerAdapter = d
 
 	d.Log(d.setModuleActual(home_module))
 
