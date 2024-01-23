@@ -53,5 +53,4 @@ func (d *Dom) KeyboardClientDisable(disable bool) {
 
 	}
 
-	return
 }
