@@ -7,13 +7,16 @@ import (
 )
 
 func (d *Dom) objectClickedUI(this js.Value, source_input []js.Value) interface{} {
-	const e = ". objectClickedUI"
+	const e = ". objectClickedUI error"
 
 	if len(source_input) == 0 || len(source_input) > 2 {
 		return d.Log("error se espera: nombre del objeto y opcional id seleccionado" + e)
 	}
 
-	d.setActualObject(source_input[0].String()) //NOMBRE OBJETO
+	d.err = d.setActualObject(source_input[0].String()) //NOMBRE OBJETO
+	if d.err != "" {
+		return d.Log(d.err + e)
+	}
 
 	// d.Log("OBJECTO CLICK:", d.actualObject.ObjectName)
 
@@ -21,6 +24,8 @@ func (d *Dom) objectClickedUI(this js.Value, source_input []js.Value) interface{
 	if len(source_input) == 2 {
 		d.objectID = source_input[1].String() //ID OBJETO
 	}
+
+	d.actualObject.FrontHandler.ViewHandlerObject.NotifyStatusChangeAfterClicking()
 
 	if d.actualObject.FrontHandler.AfterClickNotify != nil {
 

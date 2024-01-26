@@ -40,6 +40,16 @@ func (d *Dom) deleteObject(this js.Value, p []js.Value) any {
 		return d.UserMessage(d.err + e)
 	}
 
+	// fmt.Println("ELIMINANDO OBJETO", d.actualObject.ObjectName)
+	// fmt.Println("d.actualObject.FrontHandler.AfterDelete", d.actualObject.FrontHandler.AfterDelete)
+	// NOTIFICAR
+	if d.actualObject.FrontHandler.AfterDelete != nil {
+		d.err = d.actualObject.FrontHandler.SetObjectInDomAfterDelete(objects_ids...)
+		if d.err != "" {
+			return e + d.err
+		}
+	}
+
 	return d.UserMessage("item eliminado")
 }
 
@@ -55,13 +65,6 @@ func (d *Dom) ElementsDelete(object_name string, on_server_too bool, objects_ids
 	d.err = d.DeleteObjectsInDB(d.actualObject.Table, on_server_too, objects_ids...)
 	if d.err != "" {
 		return e + d.err
-	}
-
-	if d.actualObject.FrontHandler.AfterDelete != nil {
-		d.err = d.actualObject.FrontHandler.SetObjectInDomAfterDelete(objects_ids...)
-		if d.err != "" {
-			return e + d.err
-		}
 	}
 
 	if d.actualObject.FrontHandler.ViewHandlerObject != nil {
