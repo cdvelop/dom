@@ -52,29 +52,17 @@ button.On("click", func(event js.Value) {
 
 This would provide a unified way to handle any DOM event.
 
-## 3. Better Error Handling
+## 3. Optimized Error and String Handling
 
-The current functions often return `(..., string)` where the string is an error message. This is not idiomatic Go.
+To maintain a small binary size, which is crucial for WebAssembly, the library should avoid parts of the standard library that are heavy, such as `fmt`, `errors`, and `strconv`.
 
-### Suggestion: Use the Standard `error` Interface
+### Suggestion: Use `cdvelop/tinystring`
 
-Functions should return `(..., error)` to align with Go's standard error handling practices.
+The `cdvelop/tinystring` library is optimized for creating small binaries and provides functionality for string manipulation, number conversion, and error handling.
 
-**Example:**
+Instead of returning `(..., string)` for errors, or using the standard `error` interface, functions should adopt the error handling mechanism provided by `cdvelop/tinystring`. This will ensure consistency and keep the final WASM binary as small as possible.
 
-```go
-// Current
-container, errStr := query("body")
-if errStr != "" {
-    // ...
-}
-
-// Proposed
-container, err := dom.Query("body")
-if err != nil {
-    // ...
-}
-```
+Similarly, any internal string or number conversions should also use `cdvelop/tinystring`.
 
 ## 4. Comprehensive Documentation
 
